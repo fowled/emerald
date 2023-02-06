@@ -1,0 +1,281 @@
+{
+    "backup": {
+        "description": {
+            "fr": "Crée un backup du serveur",
+            "en": "Creates a server backup"
+        },
+
+        "success": {
+            "fr": "<:yes:835565213498736650> Le backup a bien été crée !",
+            "en": "<:yes:835565213498736650> A backup has successfully been created!"
+        },
+
+        "error": {
+            "fr": "<:no:835565213322575963> Une erreur inconnue est survenue.",
+            "en": "<:no:835565213322575963> An unknown error has occured."
+        },
+
+        "invalidToken": {
+            "fr": ":warning: Le jeton de sécurité est invalide. Essai d'extraction...",
+            "en": ":warning: Security token seems invalid. Trying to extract a new one..."
+        }
+    },
+
+    "places": {
+        "description": {
+            "fr": "Liste d'endroits sympa du serveur",
+            "en": "Lists all server's places"
+        },
+
+        "coordinatesLabel": {
+            "fr": "Coordonnées",
+            "en": "Coordinates"
+        },
+
+        "addButton": {
+            "fr": "Ajouter",
+            "en": "Add"
+        },
+
+        "editButton": {
+            "fr": "Modifier",
+            "en": "Edit"
+        },
+
+        "deleteButton": {
+            "fr": "Supprimer",
+            "en": "Delete"
+        },
+
+        "selectMenuPlaceholder": {
+            "fr": "Choisis un endroit",
+            "en": "Select a place"
+        },
+
+        "modalAddTitle": {
+            "fr": "Ajouter un endroit",
+            "en": "Add a place"
+        },
+
+        "modalEditTitle": {
+            "fr": "Modifier un endroit",
+            "en": "Edit a place"
+        },
+
+        "modalDescriptionInput": {
+            "fr": "Écris une courte description de l'endroit",
+            "en": "Write a short description of the place"
+        },
+
+        "modalDimensionInput": {
+            "fr": "Dans quelle dimension se trouve-t-il ?",
+            "en": "In what dimension is it located?"
+        },
+
+        "modalXInput": {
+            "fr": "Donne le coordonnée X",
+            "en": "Enter the X coordinate"
+        },
+
+        "modalYInput": {
+            "fr": "Donne le coordonnée Y",
+            "en": "Enter the Y coordinate"
+        },
+
+        "modalZInput": {
+            "fr": "Donne le coordonnée Z",
+            "en": "Enter the Z coordinate"
+        },
+
+        "invalidCoordsMessage": {
+            "fr": "Tes coordonnées n'ont pas l'air valides. Assure-toi de ne rentrer que des nombres.",
+            "en": "Coords are invalid. Make sure to enter numbers only."
+        },
+
+        "invalidDimensionMessage": {
+            "fr": "La dimension doit être une des suivantes : `overworld`, `nether`, ou `end`",
+            "en": "Dimension must be one of these: `overworld`, `nether`, `end`."
+        },
+
+        "successfulPlaceAddMessage": {
+            "fr": "J'ai ajouté le nouvel endroit :+1:",
+            "en": "Successfully added the new place :+1:"
+        },
+
+        "confirmPlaceDeleteButton": {
+            "fr": "Je confirme",
+            "en": "Yep, go ahead"
+        },
+
+        "confirmPlaceDeleteMessage": {
+            "fr": "Es-tu certain de vouloir supprimer cet endroit ?",
+            "en": "Do you really want to delete that place?"
+        },
+
+        "errorPlaceDeleteMessage": {
+            "fr": "Il n'existe pas d'endroit avec cet identifiant.",
+            "en": "There doesn't seem to be a place with this id."
+        },
+
+        "successPlaceDeleteMessage": {
+            "fr": "L'endroit a été supprimé :+1:",
+            "en": "Successfully deleted that place :+1:"
+        },
+
+        "successPlaceEditMessage": {
+            "fr": "L'endroit a été modifié :+1:",
+            "en": "Successfully edited that place :+1:"
+        }
+    },
+
+    "start": {
+        "description": {
+            "fr": "Démarre le serveur",
+            "en": "Boots up the server"
+        },
+
+        "success": {
+            "fr": "<:yes:835565213498736650> Le serveur a démarré !",
+            "en": "<:yes:835565213498736650> Server has successfully booted up!"
+        },
+
+        "error": {
+            "fr": "<:no:835565213322575963> Le serveur est déjà allumé !",
+            "en": "<:no:835565213322575963> Server is already online!"
+        },
+
+        "invalidToken": {
+            "fr": ":warning: Le jeton de sécurité est invalide. Essai d'extraction...",
+            "en": ":warning: Security token seems invalid. Trying to extract a new one..."
+        }
+    },
+
+    "server": {
+        "onlineStatus": {
+            "fr": "Ouvert",
+            "en": "Open"
+        },
+
+        "startingStatus": {
+            "fr": "Démarrage",
+            "en": "Starting"
+        },
+
+        "preparingStatus": {
+            "fr": "Préparation",
+            "en": "Preparing"
+        },
+
+        "loadingStatus": {
+            "fr": "Chargement",
+            "en": "Loading"
+        },
+
+        "offlineStatus": {
+            "fr": "Fermé",
+            "en": "Offline"
+        },
+
+        "stoppingStatus": {
+            "fr": "Fermeture",
+            "en": "Stopping"
+        },
+
+        "savingStatus": {
+            "fr": "Sauvegarde",
+            "en": "Saving"
+        },
+
+        "statusLabel": {
+            "fr": "Statut",
+            "en": "Status"
+        },
+
+        "lastUpdateLabel": {
+            "fr": "Dernière update",
+            "en": "Last update"
+        },
+
+        "countdownLabel": {
+            "fr": "Fermeture",
+            "en": "Countdown"
+        },
+
+        "playersLabel": {
+            "fr": "Joueurs",
+            "en": "Players"
+        }
+    },
+
+    "trades": {
+        "modalAddTitle": {
+            "fr": "Ajouter un trade",
+            "en": "Add a trade"
+        },
+
+        "modalEditTitle": {
+            "fr": "Modifier un trade",
+            "en": "Edit a trade"
+        },
+
+        "modalReceivingInput": {
+            "fr": "Que propose le villageois ?",
+            "en": "What does the villager offer?"
+        },
+
+        "modalGivingInput": {
+            "fr": "Que doit-on lui donner en échange ?",
+            "en": "What should you give him in return?"
+        },
+
+        "addButton": {
+            "fr": "Ajouter",
+            "en": "Add"
+        },
+
+        "editButton": {
+            "fr": "Modifier",
+            "en": "Edit"
+        },
+
+        "deleteButton": {
+            "fr": "Supprimer",
+            "en": "Delete"
+        },
+
+        "generalButton": {
+            "fr": "Général",
+            "en": "Main"
+        },
+
+        "selectMenuTradeDeletePlaceholder": {
+            "fr": "Choisis le trade à supprimer",
+            "en": "Select the trade you want to delete"
+        },
+
+        "errorTradeMessage": {
+            "fr": "On dirait qu'il n'y a aucun trade associé à cet endroit.",
+            "en": "Looks like there isn't any trade linked to this place."
+        },
+
+        "successTradeDeleteMessage": {
+            "fr": "J'ai supprimé le trade :+1:",
+            "en": "Successfully deleted trade :+1:"
+        },
+
+        "modalTradeEditTitle": {
+            "fr": "Modifier un trade",
+            "en": "Edit a trade"
+        },
+
+        "selectMenuTradeEditPlaceholder": {
+            "fr": "Choisis le trade à modifier",
+            "en": "Select the trade you want to edit"
+        },
+
+        "successTradeEditMessage": {
+            "fr": "J'ai modifié le trade :+1:",
+            "en": "Successfully edited trade :+1:"
+        }
+    }
+}

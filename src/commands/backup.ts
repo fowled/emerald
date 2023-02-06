@@ -5,9 +5,11 @@ import { extractToken } from "@/lib/extractToken";
 
 import { clientInteractions } from "@/index";
 
+import { i18n } from "@/utils/i18n";
+
 module.exports = {
     name: "backup",
-    description: "Crée un backup du serveur",
+    description: i18n("description", "backup"),
     category: "misc",
 
     async execute(Client: Client, interaction: ChatInputCommandInteraction, args: string[]) {
@@ -15,24 +17,20 @@ module.exports = {
 
         switch (success) {
             case 1:
-                const backupCreated = new EmbedBuilder()
-                    .setDescription("<:yes:835565213498736650> Le backup a bien été crée !")
-                    .setColor("Green");
+                const backupCreated = new EmbedBuilder().setDescription(i18n("success", "backup")).setColor("Green");
 
                 await interaction.editReply({ embeds: [backupCreated] });
                 break;
 
             case 2:
-                const error = new EmbedBuilder()
-                    .setDescription("<:no:835565213322575963> Une erreur inconnue est survenue.")
-                    .setColor("Red");
+                const error = new EmbedBuilder().setDescription(i18n("error", "backup")).setColor("Red");
 
                 await interaction.editReply({ embeds: [error] });
                 break;
 
             case 3:
                 const invalidToken = new EmbedBuilder()
-                    .setDescription(":warning: Le jeton de sécurité est invalide. Essai d'extraction...")
+                    .setDescription(i18n("invalidToken", "backup"))
                     .setColor("Orange");
 
                 await interaction.editReply({ embeds: [invalidToken] });
@@ -40,6 +38,7 @@ module.exports = {
                 await extractToken();
 
                 await clientInteractions.get("backup").execute(Client, interaction, args);
+                break;
         }
     },
 };

@@ -9,20 +9,21 @@ import {
 
 import { serverStatus } from "@/index";
 
+import { i18n } from "@/utils/i18n";
+
 import { StatusEnum } from "@/types/Status";
 
 export async function Server(interaction: ChatInputCommandInteraction | ButtonInteraction | Message) {
     const status = serverStatus.get("status");
 
     const display = {
-        [StatusEnum.Online]: { text: "Ouvert", emoji: "🟢", color: "Green" },
-        [StatusEnum.Starting]: { text: "Démarrage", emoji: "🟠", color: "Orange" },
-        [StatusEnum.Preparing]: { text: "Préparation", emoji: "🟠", color: "Orange" },
-        [StatusEnum.Loading]: { text: "Chargement", emoji: "🟠", color: "Orange" },
-        [StatusEnum.Starting]: { text: "Démarre", emoji: "🟠", color: "Orange" },
-        [StatusEnum.Offline]: { text: "Fermé", emoji: "🔴", color: "Red" },
-        [StatusEnum.Stopping]: { text: "Fermeture", emoji: "🔴", color: "Red" },
-        [StatusEnum.Saving]: { text: "Sauvegarde", emoji: "🔴", color: "Red" },
+        [StatusEnum.Online]: { text: i18n("onlineStatus", "server"), emoji: "🟢", color: "Green" },
+        [StatusEnum.Starting]: { text: i18n("startingStatus", "server"), emoji: "🟠", color: "Orange" },
+        [StatusEnum.Preparing]: { text: i18n("preparingStatus", "server"), emoji: "🟠", color: "Orange" },
+        [StatusEnum.Loading]: { text: i18n("loadingStatus", "server"), emoji: "🟠", color: "Orange" },
+        [StatusEnum.Offline]: { text: i18n("offlineStatus", "server"), emoji: "🔴", color: "Red" },
+        [StatusEnum.Stopping]: { text: i18n("stoppingStatus", "server"), emoji: "🔴", color: "Red" },
+        [StatusEnum.Saving]: { text: i18n("savingStatus", "server"), emoji: "🔴", color: "Red" },
     };
 
     const currentDisplay = display[status.code.toString()];
@@ -30,15 +31,24 @@ export async function Server(interaction: ChatInputCommandInteraction | ButtonIn
     const embed = new EmbedBuilder()
         .setDescription(null)
         .addFields(
-            { name: "Statut", value: `${currentDisplay.emoji} ${currentDisplay.text}`, inline: true },
-            { name: "Dernière update", value: `<t:${Math.floor(new Date().getTime() / 1000)}:R>`, inline: true }
+            {
+                name: i18n("statusLabel", "server"),
+                value: `${currentDisplay.emoji} ${currentDisplay.text}`,
+                inline: true,
+            },
+
+            {
+                name: i18n("lastUpdateLabel", "server"),
+                value: `<t:${Math.floor(new Date().getTime() / 1000)}:R>`,
+                inline: true,
+            }
         )
         .setColor(currentDisplay.color);
 
     if (status?.players?.length > 0) {
         embed.addFields([
             {
-                name: "Joueurs",
+                name: i18n("playersLabel", "server"),
                 value: `\`${status.players.join("\n")}\``,
                 inline: true,
             },
@@ -50,7 +60,7 @@ export async function Server(interaction: ChatInputCommandInteraction | ButtonIn
 
         embed.addFields([
             {
-                name: "Fermeture",
+                name: i18n("countdownLabel", "server"),
                 value: `<t:${Math.floor((date + status.countdown * 1000) / 1000)}:R>`,
                 inline: true,
             },

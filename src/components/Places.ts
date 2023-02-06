@@ -10,6 +10,8 @@ import {
 
 import { pb } from "@/index";
 
+import { i18n } from "@/utils/i18n";
+
 import type { Place } from "@/types/DB";
 
 const places = async () => await pb.collection("places").getFullList<Place>(200, { sort: "-dimension" });
@@ -39,7 +41,7 @@ export const menu = async () => {
     return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
         new StringSelectMenuBuilder()
             .setCustomId("place_select")
-            .setPlaceholder("Choisis un endroit")
+            .setPlaceholder(i18n("selectMenuPlaceholder", "places"))
             .addOptions(options)
             .setMinValues(1)
             .setMaxValues(1)
@@ -47,57 +49,69 @@ export const menu = async () => {
 };
 
 export const modal = (edit: boolean) =>
-    new ModalBuilder()
-        .addComponents(
-            new ActionRowBuilder<TextInputBuilder>().addComponents(
-                new TextInputBuilder()
-                    .setCustomId("modal_place_description")
-                    .setLabel("Écris une courte description de l'endroit")
-                    .setStyle(TextInputStyle.Short)
-                    .setRequired(edit ? false : true)
-            ),
+    new ModalBuilder().addComponents(
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+                .setCustomId("modal_place_description")
+                .setLabel(i18n("modalDescriptionInput", "places"))
+                .setStyle(TextInputStyle.Short)
+                .setRequired(edit ? false : true)
+        ),
 
-            new ActionRowBuilder<TextInputBuilder>().addComponents(
-                new TextInputBuilder()
-                    .setCustomId("modal_place_dimension")
-                    .setLabel("Dans quelle dimension se trouve-t-il ?")
-                    .setStyle(TextInputStyle.Short)
-                    .setRequired(edit ? false : true)
-            ),
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+                .setCustomId("modal_place_dimension")
+                .setLabel(i18n("modalDimensionInput", "places"))
+                .setStyle(TextInputStyle.Short)
+                .setRequired(edit ? false : true)
+        ),
 
-            new ActionRowBuilder<TextInputBuilder>().addComponents(
-                new TextInputBuilder()
-                    .setCustomId("modal_place_x")
-                    .setLabel("Donne le coordonnée X")
-                    .setStyle(TextInputStyle.Short)
-                    .setRequired(edit ? false : true)
-            ),
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+                .setCustomId("modal_place_x")
+                .setLabel(i18n("modalXInput", "places"))
+                .setStyle(TextInputStyle.Short)
+                .setRequired(edit ? false : true)
+        ),
 
-            new ActionRowBuilder<TextInputBuilder>().addComponents(
-                new TextInputBuilder()
-                    .setCustomId("modal_place_y")
-                    .setLabel("Donne le coordonnée Y")
-                    .setStyle(TextInputStyle.Short)
-                    .setRequired(edit ? false : true)
-            ),
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+                .setCustomId("modal_place_y")
+                .setLabel(i18n("modalYInput", "places"))
+                .setStyle(TextInputStyle.Short)
+                .setRequired(edit ? false : true)
+        ),
 
-            new ActionRowBuilder<TextInputBuilder>().addComponents(
-                new TextInputBuilder()
-                    .setCustomId("modal_place_z")
-                    .setLabel("Donne le coordonnée Z")
-                    .setStyle(TextInputStyle.Short)
-                    .setRequired(edit ? false : true)
-            )
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+                .setCustomId("modal_place_z")
+                .setLabel(i18n("modalZInput", "places"))
+                .setStyle(TextInputStyle.Short)
+                .setRequired(edit ? false : true)
         )
-        .setTitle("Ajouter un endroit");
+    );
 
 export const actions = async (id: string) => {
     filter(await place(id));
 
     return new ActionRowBuilder<ButtonBuilder>().addComponents(
-        new ButtonBuilder().setCustomId(`place_add_modal`).setStyle(3).setLabel("Ajouter").setEmoji("➕"),
-        new ButtonBuilder().setCustomId(`place_edit_modal_${id}`).setStyle(1).setLabel("Modifier").setEmoji("✏️"),
-        new ButtonBuilder().setCustomId(`place_delete_${id}`).setStyle(4).setLabel("Supprimer").setEmoji("🗑️")
+        new ButtonBuilder()
+            .setCustomId(`place_add_modal`)
+            .setStyle(3)
+            .setLabel(i18n("addButton", "places"))
+            .setEmoji("➕"),
+
+        new ButtonBuilder()
+            .setCustomId(`place_edit_modal_${id}`)
+            .setStyle(1)
+            .setLabel(i18n("editButton", "places"))
+            .setEmoji("✏️"),
+
+        new ButtonBuilder()
+            .setCustomId(`place_delete_${id}`)
+            .setStyle(4)
+            .setLabel(i18n("deleteButton", "places"))
+            .setEmoji("🗑️")
     );
 };
 
@@ -124,7 +138,7 @@ export const embed = async (id: string) => {
                 inline: true,
             },
             {
-                name: "Coordonnées",
+                name: i18n("coordinatesLabel", "places"),
                 value: `\`${fetchPlace.x}\`, \`${fetchPlace.y}\`, \`${fetchPlace.z}\``,
                 inline: true,
             }

@@ -4,23 +4,23 @@ import { modal } from "@/components/Places";
 
 import { pb } from "@/index";
 
+import { i18n } from "@/utils/i18n";
+
 import type { Place } from "@/types/DB";
 
 module.exports = {
     name: "editPlace",
 
     async execute(_Client: Client, interaction: ButtonInteraction | ModalSubmitInteraction) {
-        const places = await pb.collection("places").getFullList<Place>();
-
         const getPlaceId = interaction.customId.replace(/[^0-9]/g, "");
-
-        const getPlace = places.find((place) => place.place_id === parseInt(getPlaceId));
 
         const instruction = interaction.customId.split("_").at(2);
 
         switch (instruction) {
             case "modal":
-                const editPlaceModal = modal(true).setCustomId("place_edit_submitted_" + getPlaceId);
+                const editPlaceModal = modal(true)
+                    .setCustomId("place_edit_submitted_" + getPlaceId)
+                    .setTitle(i18n("modalEditTitle", "places"));
 
                 await (interaction as ButtonInteraction).showModal(editPlaceModal);
                 break;
@@ -32,7 +32,7 @@ module.exports = {
 
                 const editData = {};
 
-                for (const [_key, value] of fields) {
+                for (const [_, value] of fields) {
                     if (value.value.length > 0) {
                         const extractFieldName = value.customId.split("_").at(-1);
 
@@ -44,7 +44,7 @@ module.exports = {
 
                 await pb.collection("places").update(place.id, editData);
 
-                await interaction.followUp({ content: "J'ai modifié les données de l'endroit :+1:", ephemeral: true });
+                await interaction.followUp({ content: i18n("successPlaceEditMessage", "places"), ephemeral: true });
                 break;
         }
     },

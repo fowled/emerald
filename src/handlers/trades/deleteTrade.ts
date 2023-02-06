@@ -2,6 +2,8 @@ import { ButtonInteraction, Client, StringSelectMenuInteraction } from "discord.
 
 import { menu } from "@/components/Trades";
 
+import { i18n } from "@/utils/i18n";
+
 import { pb } from "@/index";
 
 module.exports = {
@@ -19,7 +21,7 @@ module.exports = {
                 await pb.collection("trades").delete(tradeId);
 
                 await interaction.editReply({
-                    content: "J'ai supprimé le trade :+1:",
+                    content: i18n("successTradeDeleteMessage", "trades"),
                     components: [],
                 });
                 break;
@@ -33,7 +35,7 @@ module.exports = {
                     selectMenu.components
                         .at(0)
                         .setCustomId("trades_delete_submitted")
-                        .setPlaceholder("Choisis le trade à supprimer");
+                        .setPlaceholder(i18n("selectMenuTradeDeletePlaceholder", "trades"));
 
                     await interaction.followUp({ components: [selectMenu], ephemeral: true });
                     break;
@@ -41,7 +43,7 @@ module.exports = {
                     await interaction.editReply({
                         components: [],
                         embeds: [],
-                        content: "On dirait qu'il n'y a aucun trade associé à cet endroit.",
+                        content: i18n("errorTradeMessage", "trades"),
                     });
                     break;
                 }

@@ -2,12 +2,14 @@ import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, Client } from "disc
 
 import { pb } from "@/index";
 
+import { i18n } from "@/utils/i18n";
+
 import type { Place } from "@/types/DB";
 
 module.exports = {
     name: "deletePlace",
 
-    async execute(Client: Client, interaction: ButtonInteraction) {
+    async execute(_: Client, interaction: ButtonInteraction) {
         const getPlaceId = interaction.customId.replace(/[^0-9]/g, "");
         const confirmed = interaction.customId.includes("confirm");
 
@@ -20,11 +22,11 @@ module.exports = {
                         .setCustomId(`place_delete_confirm_${getPlaceId}`)
                         .setStyle(4)
                         .setEmoji("⚠️")
-                        .setLabel("Je confirme")
+                        .setLabel(i18n("confirmPlaceDeleteButton", "places"))
                 );
 
                 interaction.followUp({
-                    content: `Es-tu certain de vouloir supprimer l'endroit d'identifiant \`${getPlaceId}\`?`,
+                    content: i18n("confirmPlaceDeleteMessage", "places"),
                     ephemeral: true,
                     components: [verification],
                 });
@@ -37,13 +39,13 @@ module.exports = {
                     await pb.collection("places").delete(findPlace.id);
                 } else {
                     return interaction.editReply({
-                        content: `Il n'existe pas d'endroit avec l'identifiant \`${getPlaceId}\`.`,
+                        content: i18n("errorPlaceDeleteMessage", "places"),
                         components: [],
                     });
                 }
 
                 interaction.editReply({
-                    content: `L'élément n°\`${getPlaceId}\` a bien été supprimé.`,
+                    content: i18n("successPlaceDeleteMessage", "places"),
                     components: [],
                 });
                 break;

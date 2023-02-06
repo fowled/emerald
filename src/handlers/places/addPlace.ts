@@ -4,12 +4,14 @@ import { modal } from "@/components/Places";
 
 import { pb } from "@/index";
 
+import { i18n } from "@/utils/i18n";
+
 import type { Place } from "@/types/DB";
 
 module.exports = {
     name: "addPlace",
 
-    async execute(Client: Client, interaction: ButtonInteraction | ModalSubmitInteraction) {
+    async execute(_: Client, interaction: ButtonInteraction | ModalSubmitInteraction) {
         const instruction = interaction.customId.split("_").at(2);
 
         switch (instruction) {
@@ -22,14 +24,14 @@ module.exports = {
 
                 if (isNaN(parseInt(x)) || isNaN(parseInt(y)) || isNaN(parseInt(z))) {
                     return interaction.followUp({
-                        content: "Tes coordonnées n'ont pas l'air valides. Assure-toi de ne rentrer que des nombres.",
+                        content: i18n("invalidCoordsMessage", "places"),
                         ephemeral: true,
                     });
                 }
 
                 if (!["end", "nether", "overworld"].includes(dimension.toLowerCase())) {
                     return interaction.followUp({
-                        content: "La dimension doit être une des suivantes : `overworld`, `nether`, ou `end`",
+                        content: i18n("invalidDimensionMessage", "places"),
                         ephemeral: true,
                     });
                 }
@@ -46,13 +48,15 @@ module.exports = {
                 await pb.collection("places").create(data);
 
                 await interaction.followUp({
-                    content: "C'est tout bon, j'ai ajouté le nouvel endroit ! :+1:",
+                    content: i18n("successfulPlaceAddMessage", "places"),
                     ephemeral: true,
                 });
                 break;
 
             case "modal":
-                const addPlaceModal = modal(false).setCustomId("place_add_submitted");
+                const addPlaceModal = modal(false)
+                    .setCustomId("place_add_submitted")
+                    .setTitle(i18n("modalAddTitle", "places"));
 
                 await (interaction as ButtonInteraction).showModal(addPlaceModal);
                 break;

@@ -4,6 +4,8 @@ import { modal, menu } from "@/components/Trades";
 
 import { pb } from "@/index";
 
+import { i18n } from "@/utils/i18n";
+
 import type { Trade } from "@/types/DB";
 
 module.exports = {
@@ -18,7 +20,9 @@ module.exports = {
             case "modal":
                 tradeId = (interaction as StringSelectMenuInteraction).values.at(0);
 
-                modal.setCustomId("trades_edit_submitted_" + tradeId + "_" + placeId).setTitle("Modifier un trade");
+                modal
+                    .setCustomId("trades_edit_submitted_" + tradeId + "_" + placeId)
+                    .setTitle(i18n("modalTradeEditTitle", "trades"));
 
                 await (interaction as ButtonInteraction).showModal(modal);
                 break;
@@ -33,7 +37,7 @@ module.exports = {
                 await pb.collection("trades").update<Trade>(tradeId, { receiving, giving });
 
                 await interaction.editReply({
-                    content: "J'ai modifié le trade :+1:",
+                    content: i18n("successTradeEditMessage", "trades"),
                     components: [],
                 });
                 break;
@@ -47,7 +51,7 @@ module.exports = {
                     selectMenu.components
                         .at(0)
                         .setCustomId("trades_edit_modal")
-                        .setPlaceholder("Choisis le trade à modifier");
+                        .setPlaceholder(i18n("selectMenuTradeEditPlaceholder", "trades"));
 
                     await interaction.followUp({ components: [selectMenu], ephemeral: true });
                     break;
@@ -55,7 +59,7 @@ module.exports = {
                     await interaction.editReply({
                         components: [],
                         embeds: [],
-                        content: "On dirait qu'il n'y a aucun trade associé à cet endroit.",
+                        content: i18n("errorTradeMessage", "trades"),
                     });
                     break;
                 }

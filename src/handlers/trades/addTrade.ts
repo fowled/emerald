@@ -4,6 +4,8 @@ import { pb } from "@/index";
 
 import { modal, embed, controls, actions } from "@/components/Trades";
 
+import { i18n } from "@/utils/i18n";
+
 import type { Place } from "@/types/DB";
 
 module.exports = {
@@ -16,7 +18,7 @@ module.exports = {
 
         switch (instruction) {
             case "modal":
-                modal.setCustomId("trades_add_submitted_" + getPlaceId).setTitle("Ajouter un trade");
+                modal.setCustomId("trades_add_submitted_" + getPlaceId).setTitle(i18n("modalAddTitle", "trades"));
 
                 await (interaction as ButtonInteraction).showModal(modal);
                 break;

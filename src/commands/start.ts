@@ -5,9 +5,11 @@ import { clientInteractions } from "@/index";
 import { extractToken } from "@/lib/extractToken";
 import { startServer } from "@/lib/startServer";
 
+import { i18n } from "@/utils/i18n";
+
 module.exports = {
     name: "start",
-    description: "Démarre le serveur",
+    description: i18n("description", "start"),
     category: "misc",
 
     async execute(Client: Client, interaction: ChatInputCommandInteraction, args: string[]) {
@@ -15,24 +17,20 @@ module.exports = {
 
         switch (success) {
             case 1:
-                const bootedUp = new EmbedBuilder()
-                    .setDescription("<:yes:835565213498736650> Le serveur a démarré !")
-                    .setColor("Green");
+                const bootedUp = new EmbedBuilder().setDescription(i18n("success", "start")).setColor("Green");
 
                 await interaction.editReply({ embeds: [bootedUp] });
                 break;
 
             case 2:
-                const alreadyLaunched = new EmbedBuilder()
-                    .setDescription("<:no:835565213322575963> Le serveur est déjà allumé !")
-                    .setColor("Red");
+                const alreadyLaunched = new EmbedBuilder().setDescription(i18n("error", "start")).setColor("Red");
 
                 await interaction.editReply({ embeds: [alreadyLaunched] });
                 break;
 
             case 3:
                 const invalidToken = new EmbedBuilder()
-                    .setDescription(":warning: Le jeton de sécurité est invalide. Essai d'extraction...")
+                    .setDescription(i18n("invalidToken", "start"))
                     .setColor("Orange");
 
                 await interaction.editReply({ embeds: [invalidToken] });

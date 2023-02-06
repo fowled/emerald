@@ -2,6 +2,8 @@ import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, Client } from "disc
 
 import { embed, actions, controls } from "@/components/Trades";
 
+import { i18n } from "@/utils/i18n";
+
 module.exports = {
     name: "trades",
 
@@ -18,19 +20,19 @@ module.exports = {
             const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
                 new ButtonBuilder()
                     .setCustomId(`place_select_${getPlaceId}`)
-                    .setLabel("Général")
+                    .setLabel(i18n("generalButton", "trades"))
                     .setEmoji("ℹ️")
                     .setStyle(1),
-                    
+
                 new ButtonBuilder()
                     .setCustomId("trades_add_modal_" + getPlaceId)
                     .setStyle(3)
-                    .setLabel("En ajouter un")
+                    .setLabel(i18n("addButton", "trades"))
                     .setEmoji("➕")
             );
 
             return await interaction.editReply({
-                content: "On dirait qu'il n'y a aucun trade de disponible.",
+                content: i18n("errorTradeMessage", "trades"),
                 components: [buttons],
                 embeds: [],
             });
