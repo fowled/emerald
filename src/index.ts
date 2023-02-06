@@ -15,7 +15,7 @@ const client = new Client({
     intents: ["Guilds", "GuildMembers", "GuildMessages", "GuildMessageReactions", "GuildBans", "MessageContent"],
 });
 
-export const pb = new pocketbase("http://137.184.190.118:8090");
+export const pb = new pocketbase(config.pocketbase_host);
 
 export const clientInteractions = new Collection<string, Command>();
 
@@ -25,7 +25,7 @@ export const serverStatus = new Collection<string, { code: number; players?: str
 
 binder();
 
-await pb.admins.authWithPassword("ma15fo43@gmail.com", config.pocketbase_pwd);
+await pb.admins.authWithPassword(config.pocketbase_mail, config.pocketbase_pwd);
 
 process.on("unhandledRejection", (error: Error) => {
     warn(error);
