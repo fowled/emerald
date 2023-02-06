@@ -1,0 +1,31 @@
+{
+    "name": "emerald",
+    "version": "1.0.0",
+    "description": "",
+    "type": "module",
+    "main": "src/index.ts",
+    "scripts": {
+        "start": "tsx src/index.ts",
+        "setup": "",
+        "test": "vitest run --reporter verbose"
+    },
+    "keywords": [],
+    "author": "fowled",
+    "license": "MIT",
+    "dependencies": {
+        "@types/jsdom": "^20.0.1",
+        "@types/randomstring": "^1.1.8",
+        "@types/ws": "^8.5.4",
+        "chalk": "^5.2.0",
+        "discord.js": "^14.7.1",
+        "fast-glob": "^3.2.12",
+        "jsdom": "^21.0.0",
+        "pocketbase": "^0.10.1",
+        "randomstring": "^1.2.3",
+        "vitest": "^0.28.1",
+        "ws": "^8.12.0"
+    },
+    "devDependencies": {
+        "vite": "^4.0.4"
+    }
+}

@@ -1,0 +1,35 @@
+import chalk from "chalk";
+
+export function log(message: string): void {
+    const output = [chalk.gray(new Date().toLocaleTimeString()), chalk.green("[log]"), message, "\n"];
+
+    process.stdout.write(output.join(" "));
+}
+
+export function ws(message: string): void {
+    const output = [chalk.gray(new Date().toLocaleTimeString()), chalk.magenta("[ws]"), message, "\n"];
+
+    process.stdout.write(output.join(" "));
+}
+
+export function error(message: string | Error): void {
+    const erroutput = [
+        chalk.gray(new Date().toLocaleTimeString()),
+        chalk.red("[err]"),
+        message instanceof Error ? `${message.name}\n\t${message.message}\n\t${message.stack}` : message,
+        "\n",
+    ];
+
+    process.stderr.write(erroutput.join(" "));
+}
+
+export function warn(message: string | Error): void {
+    const warnoutput = [
+        chalk.gray(new Date().toLocaleTimeString()),
+        chalk.yellowBright("[warn]"),
+        message instanceof Error ? `${message.name}\n\t${message.message}\n\t${message.stack}` : message,
+        "\n",
+    ];
+
+    process.stdout.write(warnoutput.join(" "));
+}
