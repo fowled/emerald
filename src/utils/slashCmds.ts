@@ -1,6 +1,5 @@
 import Discord from "discord.js";
 import glob from "fast-glob";
-import path from "path";
 
 import { log } from "./logger";
 
@@ -9,7 +8,7 @@ export async function create(client: Discord.Client) {
 
     await Promise.all(
         commandFiles.map(async (file) => {
-            const command = await import(path.resolve(file));
+            const command = await import(file);
 
             const commandObject = {
                 name: command.default.name,

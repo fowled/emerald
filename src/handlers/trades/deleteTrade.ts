@@ -9,7 +9,7 @@ import { pb } from "@/index";
 module.exports = {
     name: "deleteTrade",
 
-    async execute(_Client: Client, interaction: ButtonInteraction | StringSelectMenuInteraction) {
+    async execute(_: Client, interaction: ButtonInteraction | StringSelectMenuInteraction) {
         const instruction = interaction.customId.split("_").at(2);
 
         let tradeId: string, placeId: string;

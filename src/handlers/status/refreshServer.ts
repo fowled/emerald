@@ -5,7 +5,7 @@ import { Server } from "@/components/Server";
 module.exports = {
     name: "refreshServer",
 
-    async execute(_Client: Client, interaction: ButtonInteraction) {
+    async execute(_: Client, interaction: ButtonInteraction) {
         return await Server(interaction);
     },
 };

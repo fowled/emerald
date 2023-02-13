@@ -7,7 +7,7 @@ module.exports = {
     description: "Affiche des informations à propos du serveur",
     category: "misc",
 
-    async execute(_Client: Client, interaction: ChatInputCommandInteraction) {
+    async execute(_: Client, interaction: ChatInputCommandInteraction) {
         return await Server(interaction);
     },
 };

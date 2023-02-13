@@ -7,7 +7,7 @@ import { i18n } from "@/utils/i18n";
 module.exports = {
     name: "trades",
 
-    async execute(_Client: Client, interaction: ButtonInteraction) {
+    async execute(_: Client, interaction: ButtonInteraction) {
         const getPlaceId = interaction.customId.replace(/[^0-9]/g, "");
 
         try {

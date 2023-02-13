@@ -1,7 +1,6 @@
 import { Client, Collection } from "discord.js";
 import { EventEmitter } from "node:events";
 import pocketbase from "pocketbase";
-import { resolve } from "path";
 import glob from "fast-glob";
 import chalk from "chalk";
 
@@ -36,9 +35,9 @@ async function binder() {
     const customEventFiles = glob.sync("src/handlers/**/*.ts");
     const commandFiles = glob.sync("src/commands/**/*.ts");
 
-    Promise.all([
+    await Promise.all([
         eventFiles.map(async (file) => {
-            const event = (await import(resolve(file))).default;
+            const event = (await import(file)).default;
 
             if (event.once) {
                 client.once(event.name, async (...args) => await event.execute(client, ...args));
@@ -48,13 +47,13 @@ async function binder() {
         }),
 
         commandFiles.map(async (file) => {
-            const command: Command = (await import(resolve(file))).default;
+            const command: Command = (await import(file)).default;
 
             clientInteractions.set(command.name, command);
         }),
 
         customEventFiles.map(async (file) => {
-            const event = (await import(resolve(file))).default;
+            const event = (await import(file)).default;
 
             events.on(event.name, async (...args) => await event.execute(client, ...args));
         }),

@@ -14,7 +14,12 @@ module.exports = {
 
         const status = serverStatus.get("status").code;
 
-        if (message.author.bot || message.channel.id !== config.chat_channel || status !== StatusEnum.Online) {
+        if (
+            message.author.bot ||
+            message.channel.id !== config.chat_channel ||
+            status !== StatusEnum.Online ||
+            message.content.startsWith("//")
+        ) {
             return;
         }
 

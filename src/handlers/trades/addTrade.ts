@@ -11,7 +11,7 @@ import type { Place } from "@/types/DB";
 module.exports = {
     name: "addTrade",
 
-    async execute(_Client: Client, interaction: ButtonInteraction | ModalSubmitInteraction) {
+    async execute(_: Client, interaction: ButtonInteraction | ModalSubmitInteraction) {
         const instruction = interaction.customId.split("_").at(2);
 
         const getPlaceId = interaction.customId.replace(/[^0-9]/g, "");
