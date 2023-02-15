@@ -48,10 +48,6 @@ export function connectWS(Client: Client) {
 
         reconnecting = false;
 
-        setTimeout(function () {
-            websocket.close();
-        }, 30000);
-
         setInterval(() => {
             websocket.pong("❤");
         }, 45000);
