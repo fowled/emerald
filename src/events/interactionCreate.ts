@@ -66,8 +66,9 @@ module.exports = {
             !interaction.isChatInputCommand() ||
             !interaction.isCommand() ||
             !clientInteractions.has(interaction.commandName)
-        )
+        ) {
             return;
+        }
 
         const args = interaction.options.data
             .filter((data) => data.type !== ApplicationCommandOptionType.Subcommand)

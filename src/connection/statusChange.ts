@@ -1,4 +1,8 @@
+import chalk from "chalk";
+
 import { serverStatus, events } from "@/index";
+
+import { ws } from "@/utils/logger";
 
 import { StatusEnum } from "@/types/Status";
 
@@ -11,15 +15,27 @@ type Message = {
     countdown?: number;
 };
 
-export async function statusChange(message: Message, websocket: WebSocket, Client: Client) {
-    const getCurrentStatus = serverStatus.get("status")?.code;
+export const openConsoleStream = (websocket: WebSocket) => {
+    ws(`opening ${chalk.cyan("console stream")}`);
 
-    if (message.status === StatusEnum.Online && getCurrentStatus !== StatusEnum.Online) {
-        websocket.send(JSON.stringify({ stream: "console", type: "start" }));
+    return websocket.send(JSON.stringify({ stream: "console", type: "start" }));
+};
+
+export const closeConsoleStream = (websocket: WebSocket) => {
+    ws(`closing ${chalk.cyan("console stream")}`);
+
+    return websocket.send(JSON.stringify({ stream: "console", type: "end" }));
+};
+
+export async function statusChange(message: Message, websocket: WebSocket, Client: Client) {
+    const status = serverStatus.get("status")?.code;
+
+    if (message.status === StatusEnum.Online && status !== StatusEnum.Online) {
+        openConsoleStream(websocket);
     }
 
-    if (message.status === StatusEnum.Offline && getCurrentStatus !== StatusEnum.Offline) {
-        websocket.send(JSON.stringify({ stream: "console", type: "end" }));
+    if (message.status === StatusEnum.Offline && status !== StatusEnum.Offline) {
+        closeConsoleStream(websocket);
     }
 
     const eventData = {

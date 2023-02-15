@@ -1,21 +1,28 @@
 import { Client, TextChannel } from "discord.js";
 
+import { lastReconnectingTime } from "./websocket";
+
 const config = await import("config.json");
 
 export async function consoleLogHandler(log: string, Client: Client) {
-    if (!log.toLowerCase().includes("server thread/info")) return;
+    if (!log.toLowerCase().includes("server thread/info")) {
+        return;
+    }
 
     const dateRegex = /\[(.*?)\]/;
     const authorRegex = /\<(.*?)\>/;
 
-    const date = log?.match(dateRegex)?.at(1)?.split(":")?.slice(0, 2);
+    const date = log?.match(dateRegex)?.at(1)?.split(":")?.slice(0, 3);
 
-    const uptimeDate = new Date(Date.now() - Client.uptime).getTime();
-    const messageDate = new Date().setHours(parseInt(date.at(0)), parseInt(date.at(1)));
+    const messageDate = new Date().setHours(parseInt(date.at(0)), parseInt(date.at(1)), parseInt(date.at(2)));
 
     const author = log.match(authorRegex)?.at(1);
 
-    if (messageDate < uptimeDate || (!author && !/joined the game|left the game/.test(log))) return;
+    console.log(new Date(messageDate).toLocaleTimeString(), new Date(lastReconnectingTime).toLocaleTimeString());
+
+    if (messageDate < lastReconnectingTime || (!author && !/joined the game|left the game/.test(log))) {
+        return;
+    }
 
     const msgContentRegex = new RegExp(`${dateRegex.source}|:|${authorRegex.source}`, "g");
 

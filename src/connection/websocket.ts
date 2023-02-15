@@ -4,8 +4,8 @@ import ws from "ws";
 
 import { checkInitialServerState } from "@/lib/initialServerState";
 
+import { statusChange, openConsoleStream } from "@/connection/statusChange";
 import { consoleLogHandler } from "@/connection/consoleLog";
-import { statusChange } from "@/connection/statusChange";
 
 import { ws as log } from "@/utils/logger";
 
@@ -21,6 +21,10 @@ const headers = {
 
 const getStatus = () => serverStatus.get("status")?.code;
 
+let reconnecting = false;
+
+export let lastReconnectingTime: number;
+
 export let websocket: ws;
 
 export function connectWS(Client: Client) {
@@ -30,11 +34,23 @@ export function connectWS(Client: Client) {
     });
 
     websocket.on("open", () => {
-        log("connection opened");
+        log(`connection ${chalk.cyan("opened")}`);
+
+        lastReconnectingTime = Date.now();
 
         if (!getStatus()) {
             checkInitialServerState(websocket, Client);
         }
+
+        if (reconnecting) {
+            openConsoleStream(websocket);
+        }
+
+        reconnecting = false;
+
+        setTimeout(function () {
+            websocket.close();
+        }, 30000);
 
         setInterval(() => {
             websocket.pong("❤");
@@ -73,8 +89,10 @@ export function connectWS(Client: Client) {
     });
 
     websocket.on("close", (info) => {
-        log(`status code ${chalk.magentaBright(info)} - connection closed.`);
-        log("trying to reconnect...");
+        log(`status code ${chalk.magentaBright(info)} - ${chalk.cyan("connection closed")}.`);
+        log(`trying to ${chalk.cyan("reconnect")}...`);
+
+        reconnecting = true;
 
         return connectWS(Client);
     });
