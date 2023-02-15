@@ -18,8 +18,6 @@ export async function consoleLogHandler(log: string, Client: Client) {
 
     const author = log.match(authorRegex)?.at(1);
 
-    console.log(new Date(messageDate).toLocaleTimeString(), new Date(lastReconnectingTime).toLocaleTimeString());
-
     if (messageDate < lastReconnectingTime || (!author && !/joined the game|left the game/.test(log))) {
         return;
     }
