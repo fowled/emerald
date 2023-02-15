@@ -55,7 +55,9 @@ export function connectWS(Client: Client) {
     });
 
     websocket.on("discordReceive", (message: Message) => {
-        const string = `/tellraw @a ["",{"text":"${message.author.username}","bold": "true","color":"${message.member.displayHexColor}"},{"text":": "},{"text":"${message.content}","color":"yellow"}]`;
+        const string = `/tellraw @a ["",{"text":"${message.author.username}","bold": "true","color":"${
+            message.member.displayHexColor
+        }"},{"text":": "},{"text":"${message.content.replace(/"/g, '\\"')}","color":"yellow"}]`;
 
         return websocket.send(
             JSON.stringify({

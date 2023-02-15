@@ -9,7 +9,7 @@ import { StatusEnum } from "@/types/Status";
 module.exports = {
     name: "messageCreate",
 
-    async execute(Client: Client, message: Message) {
+    async execute(_: Client, message: Message) {
         const config = await import("config.json");
 
         const status = serverStatus.get("status").code;
