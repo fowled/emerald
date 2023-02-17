@@ -1,4 +1,4 @@
-import { Client, TextChannel } from "discord.js";
+import { Client, ColorResolvable, EmbedBuilder, TextChannel } from "discord.js";
 
 import { lastReconnectingTime } from "./websocket";
 
@@ -28,5 +28,22 @@ export async function consoleLogHandler(log: string, Client: Client) {
 
     const finalLog = log.replace(msgContentRegex, (match) => (++occurences <= 4 ? "" : match)).trim();
 
-    ((await Client.channels.fetch(config.chat_channel)) as TextChannel).send(`**${author ?? "Server"}**: ${finalLog}`);
+    const head = `https://mc-heads.net/avatar/${author}/`;
+
+    let embedColor: ColorResolvable;
+
+    if (!author && finalLog.includes("joined the game")) {
+        embedColor = "Green";
+    } else if (!author && finalLog.includes("left the game")) {
+        embedColor = "Red";
+    } else {
+        embedColor = "Blue";
+    }
+
+    const embed = new EmbedBuilder()
+        .setAuthor({ name: author ?? "Server", iconURL: head })
+        .setDescription(finalLog)
+        .setColor(embedColor);
+
+    ((await Client.channels.fetch(config.chat_channel)) as TextChannel).send({ embeds: [embed] });
 }
