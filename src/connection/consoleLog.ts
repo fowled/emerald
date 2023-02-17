@@ -1,4 +1,4 @@
-import { Client, ColorResolvable, EmbedBuilder, TextChannel } from "discord.js";
+import { Client, WebhookClient } from "discord.js";
 
 import { lastReconnectingTime } from "./websocket";
 
@@ -28,22 +28,11 @@ export async function consoleLogHandler(log: string, Client: Client) {
 
     const finalLog = log.replace(msgContentRegex, (match) => (++occurences <= 4 ? "" : match)).trim();
 
-    const head = `https://mc-heads.net/avatar/${author}/`;
+    const avatar = author ? `https://mc-heads.net/avatar/${author}` : "https://mc-heads.net/avatar/MHF_Steve";
 
-    let embedColor: ColorResolvable;
+    const fetchWebhook = new WebhookClient({ url: config.discord_webhook });
 
-    if (!author && finalLog.includes("joined the game")) {
-        embedColor = "Green";
-    } else if (!author && finalLog.includes("left the game")) {
-        embedColor = "Red";
-    } else {
-        embedColor = "Blue";
-    }
+    await fetchWebhook.edit({ name: author ?? "Server", avatar });
 
-    const embed = new EmbedBuilder()
-        .setAuthor({ name: author ?? "Server", iconURL: head })
-        .setDescription(finalLog)
-        .setColor(embedColor);
-
-    ((await Client.channels.fetch(config.chat_channel)) as TextChannel).send({ embeds: [embed] });
+    await fetchWebhook.send(finalLog);
 }
