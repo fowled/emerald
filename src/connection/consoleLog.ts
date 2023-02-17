@@ -4,6 +4,8 @@ import { lastReconnectingTime } from "./websocket";
 
 const config = await import("config.json");
 
+const webhook = new WebhookClient({ url: config.discord_webhook });
+
 export async function consoleLogHandler(log: string, Client: Client) {
     if (!log.toLowerCase().includes("server thread/info")) {
         return;
@@ -28,11 +30,7 @@ export async function consoleLogHandler(log: string, Client: Client) {
 
     const finalLog = log.replace(msgContentRegex, (match) => (++occurences <= 4 ? "" : match)).trim();
 
-    const avatar = author ? `https://mc-heads.net/avatar/${author}` : "https://mc-heads.net/avatar/MHF_Steve";
+    const avatarURL = author ? `https://mc-heads.net/avatar/${author}` : "https://mc-heads.net/avatar/MHF_Steve";
 
-    const fetchWebhook = new WebhookClient({ url: config.discord_webhook });
-
-    await fetchWebhook.edit({ name: author ?? "Server", avatar });
-
-    await fetchWebhook.send(finalLog);
+    await webhook.send({ content: finalLog, username: author ?? "Server", avatarURL });
 }
