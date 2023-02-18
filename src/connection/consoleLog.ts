@@ -1,4 +1,5 @@
-import { Client, WebhookClient } from "discord.js";
+import { createLoggedMessage, createLoggedEvent } from "minecraft-server-logs";
+import { WebhookClient } from "discord.js";
 
 import { lastReconnectingTime } from "./websocket";
 
@@ -6,31 +7,45 @@ const config = await import("config.json");
 
 const webhook = new WebhookClient({ url: config.discord_webhook });
 
-export async function consoleLogHandler(log: string, Client: Client) {
-    if (!log.toLowerCase().includes("server thread/info")) {
+export async function consoleLogHandler(log: string) {
+    const parseLog = createLoggedMessage(log);
+    const parseEventLog = createLoggedEvent(parseLog);
+
+    if (!parseEventLog) {
         return;
     }
 
-    const dateRegex = /\[(.*?)\]/;
-    const authorRegex = /\<(.*?)\>/;
+    const timestamp = parseEventLog.timestamp.split(":");
 
-    const date = log?.match(dateRegex)?.at(1)?.split(":")?.slice(0, 3);
+    const messageDate = new Date().setHours(
+        parseInt(timestamp.at(0)),
+        parseInt(timestamp.at(1)),
+        parseInt(timestamp.at(2))
+    );
 
-    const messageDate = new Date().setHours(parseInt(date.at(0)), parseInt(date.at(1)), parseInt(date.at(2)));
-
-    const author = log.match(authorRegex)?.at(1);
-
-    if (messageDate < lastReconnectingTime || (!author && !/joined the game|left the game/.test(log))) {
+    if (messageDate < lastReconnectingTime) {
         return;
     }
 
-    const msgContentRegex = new RegExp(`${dateRegex.source}|:|${authorRegex.source}`, "g");
+    let avatarURL = "https://mc-heads.net/avatar/MHF_Steve",
+        content: string,
+        username = "[Serveur]";
 
-    let occurences = 0;
+    switch (parseEventLog.eventName) {
+        case "chatMessage":
+            avatarURL = `https://mc-heads.net/avatar/${parseEventLog["playerName"]}`;
+            username = parseEventLog["playerName"];
+            content = parseEventLog["messageContent"];
+            break;
 
-    const finalLog = log.replace(msgContentRegex, (match) => (++occurences <= 4 ? "" : match)).trim();
+        case "playerJoined":
+            content = `🟢 ${parseEventLog["playerName"]} a rejoint le serveur.`;
+            break;
 
-    const avatarURL = author ? `https://mc-heads.net/avatar/${author}` : "https://mc-heads.net/avatar/MHF_Steve";
+        case "playerLeft":
+            content = `🔴 ${parseEventLog["playerName"]} a quitté le serveur.`;
+            break;
+    }
 
-    await webhook.send({ content: finalLog, username: author ?? "Server", avatarURL });
+    await webhook.send({ content, username, avatarURL });
 }

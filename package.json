@@ -20,6 +20,7 @@
         "discord.js": "^14.7.1",
         "fast-glob": "^3.2.12",
         "jsdom": "^21.0.0",
+        "minecraft-server-logs": "^1.1.8",
         "pocketbase": "^0.10.1",
         "randomstring": "^1.2.3",
         "vitest": "^0.28.1",

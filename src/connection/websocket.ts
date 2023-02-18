@@ -58,7 +58,7 @@ export function connectWS(Client: Client) {
         const message = log.message ? JSON.parse(log.message) : null;
 
         if (log.stream === "console" && log.data !== undefined) {
-            return consoleLogHandler(log.data, Client);
+            return consoleLogHandler(log.data);
         }
 
         if (message?.status !== undefined) {
