@@ -3,7 +3,6 @@ import { WebhookClient } from "discord.js";
 import { lastReconnectingTime } from "./websocket";
 
 import { parseLog } from "@/utils/parseLog";
-import { date } from "@/utils/regex";
 
 const config = await import("config.json");
 
@@ -16,7 +15,7 @@ export async function consoleLogHandler(log: string) {
         return;
     }
 
-    const timestamp = log.match(date).pop();
+    const timestamp = log.match(/(?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9]?/g).shift().split(":");
 
     const messageDate = new Date().setHours(
         parseInt(timestamp.at(0)),

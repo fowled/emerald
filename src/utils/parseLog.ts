@@ -18,7 +18,7 @@ export function parseLog(log: string) {
     let getLogContent: string;
 
     if (chatTest) {
-        const player = enclosedUsername.exec(log).pop();
+        const player = log.match(enclosedUsername).shift().replace(/[<>]/g, "");
 
         getLogContent = log
             .replace(RegExp([date.source, thread.source, enclosedUsername.source].join("\u0020")), "")

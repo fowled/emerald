@@ -1,4 +1,4 @@
-export const date = /(?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9]?/g;
+export const date = /\[((?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9])]?/g;
 
 export const thread = /(?:\[(Server thread\/INFO|WARN|ERROR|FATAL)]:)?/g;
 
@@ -8,7 +8,7 @@ export const enclosedUsername = /<([A-z0-9]*)>?/g;
 
 export const join = /(?:(joined|left) the game*)/g;
 
-export const achievement = /has made the advancement (?:\[(.*)])/g;
+export const achievement = /(has made the advancement|has reached the goal|has completed the challenge) (?:\[(.*)])/g;
 
 export const deaths = [
     /(.*) was shot by (.*)(\susing (.*))?/g,
