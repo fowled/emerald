@@ -1,21 +1,21 @@
-import { createLoggedMessage, createLoggedEvent } from "minecraft-server-logs";
 import { WebhookClient } from "discord.js";
 
 import { lastReconnectingTime } from "./websocket";
+
+import { parseLog } from "@/utils/parseLog";
 
 const config = await import("config.json");
 
 const webhook = new WebhookClient({ url: config.discord_webhook });
 
 export async function consoleLogHandler(log: string) {
-    const parseLog = createLoggedMessage(log);
-    const parseEventLog = createLoggedEvent(parseLog);
+    const parsedLog = parseLog(log);
 
-    if (!parseEventLog) {
+    if (!parsedLog) {
         return;
     }
 
-    const timestamp = parseEventLog.timestamp.split(":");
+    const timestamp = parsedLog.content.split(":");
 
     const messageDate = new Date().setHours(
         parseInt(timestamp.at(0)),
@@ -28,24 +28,19 @@ export async function consoleLogHandler(log: string) {
     }
 
     let avatarURL = "https://mc-heads.net/avatar/MHF_Steve",
-        content: string,
-        username = "[Serveur]";
+        username = "[Server]";
 
-    switch (parseEventLog.eventName) {
-        case "chatMessage":
-            avatarURL = `https://mc-heads.net/avatar/${parseEventLog["playerName"]}`;
-            username = parseEventLog["playerName"];
-            content = parseEventLog["messageContent"];
-            break;
-
-        case "playerJoined":
-            content = `🟢 ${parseEventLog["playerName"]} a rejoint le serveur.`;
-            break;
-
-        case "playerLeft":
-            content = `🔴 ${parseEventLog["playerName"]} a quitté le serveur.`;
-            break;
+    if (parsedLog.type === "chatMessage") {
+        avatarURL = `https://mc-heads.net/avatar/${parsedLog.player}`;
+        username = parsedLog.player;
     }
 
-    await webhook.send({ content, username, avatarURL });
+    const emojis = {
+        joinEvent: "🟢",
+        leaveEvent: "🔴",
+        death: "💀",
+        achievement: "🏆"
+    }
+
+    await webhook.send({ content: emojis[parsedLog.type] + parsedLog.content, username, avatarURL });
 }
