@@ -1,13 +1,11 @@
-import { date, deaths, join, thread, username, achievement } from "./regex";
+import { date, deaths, join, thread, username, enclosedUsername, achievement } from "./regex";
 
 export function parseLog(log: string) {
     if (!RegExp([date.source, thread.source].join("\u0020")).test(log)) {
         return null;
     }
 
-    const chatTest = RegExp(
-        [date.source, thread.source, RegExp("<" + username.source + ">").source].join("\u0020")
-    ).test(log);
+    const chatTest = RegExp([date.source, thread.source, enclosedUsername.source].join("\u0020")).test(log);
 
     const joinTest = RegExp([date.source, thread.source, username.source, join.source].join("\u0020")).test(log);
 
@@ -20,13 +18,13 @@ export function parseLog(log: string) {
     let getLogContent: string;
 
     if (chatTest) {
-        const player = RegExp("<" + username.source + ">")
-            .exec(log)
-            .pop();
+        const player = enclosedUsername.exec(log).pop();
 
-        getLogContent = log.replace(RegExp([date.source, thread.source, username.source].join("\u0020")), "").trim();
+        getLogContent = log
+            .replace(RegExp([date.source, thread.source, enclosedUsername.source].join("\u0020")), "")
+            .trim();
 
-        return { type: "chatMessage", player, content: getLogContent, raw: log };
+        return { type: "chatMessage", player, content: getLogContent };
     }
 
     getLogContent = log.replace(RegExp([date.source, thread.source].join("\u0020")), "").trim();
@@ -34,14 +32,14 @@ export function parseLog(log: string) {
     if (joinTest) {
         const eventType = log.includes("joined") ? "joinEvent" : "leaveEvent";
 
-        return { type: eventType, content: getLogContent, raw: log };
+        return { type: eventType, content: getLogContent };
     }
 
     if (deathTest) {
-        return { type: "death", content: getLogContent, raw: log };
+        return { type: "death", content: getLogContent };
     }
 
     if (achievementTest) {
-        return { type: "achievement", content: getLogContent, raw: log };
+        return { type: "achievement", content: getLogContent };
     }
 }

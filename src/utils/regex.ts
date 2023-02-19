@@ -1,8 +1,10 @@
-export const date = /\[((?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9])]?/g;
+export const date = /(?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9]?/g;
 
 export const thread = /(?:\[(Server thread\/INFO|WARN|ERROR|FATAL)]:)?/g;
 
 export const username = /([A-z0-9]*)?/g;
+
+export const enclosedUsername = /<([A-z0-9]*)>?/g;
 
 export const join = /(?:(joined|left) the game*)/g;
 
