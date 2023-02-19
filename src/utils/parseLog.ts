@@ -26,7 +26,7 @@ export function parseLog(log: string) {
 
         getLogContent = log.replace(RegExp([date.source, thread.source, username.source].join("\u0020")), "").trim();
 
-        return { type: "chatMessage", player, content: getLogContent };
+        return { type: "chatMessage", player, content: getLogContent, raw: log };
     }
 
     getLogContent = log.replace(RegExp([date.source, thread.source].join("\u0020")), "").trim();
@@ -34,14 +34,14 @@ export function parseLog(log: string) {
     if (joinTest) {
         const eventType = log.includes("joined") ? "joinEvent" : "leaveEvent";
 
-        return { type: eventType, content: getLogContent };
+        return { type: eventType, content: getLogContent, raw: log };
     }
 
     if (deathTest) {
-        return { type: "death", content: getLogContent };
+        return { type: "death", content: getLogContent, raw: log };
     }
 
     if (achievementTest) {
-        return { type: "achievement", content: getLogContent };
+        return { type: "achievement", content: getLogContent, raw: log };
     }
 }

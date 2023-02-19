@@ -15,7 +15,7 @@ export async function consoleLogHandler(log: string) {
         return;
     }
 
-    const timestamp = parsedLog.content.split(":");
+    const timestamp = parsedLog.raw.split(":");
 
     const messageDate = new Date().setHours(
         parseInt(timestamp.at(0)),
@@ -39,8 +39,9 @@ export async function consoleLogHandler(log: string) {
         joinEvent: "🟢",
         leaveEvent: "🔴",
         death: "💀",
-        achievement: "🏆"
-    }
+        achievement: "🏆",
+        chatMessage: "",
+    };
 
-    await webhook.send({ content: emojis[parsedLog.type] + parsedLog.content, username, avatarURL });
+    await webhook.send({ content: `${emojis[parsedLog.type]} ${parsedLog.content}`, username, avatarURL });
 }
