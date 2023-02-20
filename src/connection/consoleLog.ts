@@ -2,6 +2,7 @@ import { WebhookClient } from "discord.js";
 
 import { lastReconnectingTime } from "./websocket";
 
+import { enclosedUsername } from "@/utils/regex";
 import { parseLog } from "@/utils/parseLog";
 
 const config = await import("config.json");
@@ -15,33 +16,32 @@ export async function consoleLogHandler(log: string) {
         return;
     }
 
-    const timestamp = log.match(/(?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9]?/g).shift().split(":");
+    const timestamp = log
+        .match(/(?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9]?/g)
+        .shift()
+        .split(":")
+        .map(Number);
 
-    const messageDate = new Date().setHours(
-        parseInt(timestamp.at(0)),
-        parseInt(timestamp.at(1)),
-        parseInt(timestamp.at(2))
-    );
+    // @ts-ignore
+    const messageDate = new Date().setHours(...timestamp);
 
     if (messageDate < lastReconnectingTime) {
         return;
     }
 
-    let avatarURL = "https://mc-heads.net/avatar/MHF_Steve",
-        username = "[Server]";
+    const emojis = { join: "🟢", leave: "🔴", death: "💀", achievement: "🏆" };
 
-    if (parsedLog.type === "chatMessage") {
-        avatarURL = `https://mc-heads.net/avatar/${parsedLog.player}`;
-        username = parsedLog.player;
+    let username: string, avatarURL: string;
+
+    if (parsedLog.type === "message") {
+        const player = log.match(enclosedUsername).shift().replace(/[<>]/g, "");
+
+        avatarURL = `https://mc-heads.net/avatar/${player}`;
+        username = player;
+    } else {
+        avatarURL = "https://mc-heads.net/avatar/MHF_Steve";
+        username = "[Server]";
     }
 
-    const emojis = {
-        joinEvent: "🟢",
-        leaveEvent: "🔴",
-        death: "💀",
-        achievement: "🏆",
-        chatMessage: "",
-    };
-
-    await webhook.send({ content: `${emojis[parsedLog.type]} ${parsedLog.content}`, username, avatarURL });
+    await webhook.send({ content: `${emojis[parsedLog.type] ?? ""} ${parsedLog.content}`, username, avatarURL });
 }

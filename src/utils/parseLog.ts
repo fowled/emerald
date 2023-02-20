@@ -1,45 +1,37 @@
-import { date, deaths, join, thread, username, enclosedUsername, achievement } from "./regex";
+import { date, deaths, join, thread, username, enclosedUsername, achievement, leave } from "./regex";
 
-export function parseLog(log: string) {
-    if (!RegExp([date.source, thread.source].join("\u0020")).test(log)) {
-        return null;
+export function parseLog(log: string): { type: string; content: string } {
+    const potentialDeathRegex = deaths.find((rgx) => rgx.test(log)) ?? /(?!)/g;
+
+    const schemes = [
+        { name: "message", rgx: [date, thread, enclosedUsername] },
+        { name: "join", rgx: [date, thread, username, join] },
+        { name: "leave", rgx: [date, thread, username, leave] },
+        { name: "achievement", rgx: [date, thread, username, achievement] },
+        { name: "death", rgx: [date, thread, username, potentialDeathRegex] },
+    ];
+
+    for (const scheme of schemes) {
+        const expression = RegExp(scheme.rgx.map((regex) => regex.source).join("\u0020"));
+
+        if (!expression.test(log)) {
+            continue;
+        }
+
+        return { type: scheme.name, content: getMsgContent(log, scheme.name, schemes, potentialDeathRegex) };
+    }
+}
+
+function getMsgContent(log: string, scheme: string, schemes: { name: string; rgx: RegExp[] }[], death: RegExp) {
+    const findScheme = schemes.find((sch) => sch.name === scheme);
+
+    const combineRegexes = [];
+    
+    for (const regex of findScheme.rgx) {
+        if (![join, leave, username, achievement, death].includes(regex)) {
+            combineRegexes.push(regex.source);
+        }
     }
 
-    const chatTest = RegExp([date.source, thread.source, enclosedUsername.source].join("\u0020")).test(log);
-
-    const joinTest = RegExp([date.source, thread.source, username.source, join.source].join("\u0020")).test(log);
-
-    const deathTest = deaths.some((rgx) => rgx.test(log));
-
-    const achievementTest = RegExp(
-        [date.source, thread.source, username.source, achievement.source].join("\u0020")
-    ).test(log);
-
-    let getLogContent: string;
-
-    if (chatTest) {
-        const player = log.match(enclosedUsername).shift().replace(/[<>]/g, "");
-
-        getLogContent = log
-            .replace(RegExp([date.source, thread.source, enclosedUsername.source].join("\u0020")), "")
-            .trim();
-
-        return { type: "chatMessage", player, content: getLogContent };
-    }
-
-    getLogContent = log.replace(RegExp([date.source, thread.source].join("\u0020")), "").trim();
-
-    if (joinTest) {
-        const eventType = log.includes("joined") ? "joinEvent" : "leaveEvent";
-
-        return { type: eventType, content: getLogContent };
-    }
-
-    if (deathTest) {
-        return { type: "death", content: getLogContent };
-    }
-
-    if (achievementTest) {
-        return { type: "achievement", content: getLogContent };
-    }
+    return log.replace(RegExp(combineRegexes.join("\u0020")), "").trim();
 }
