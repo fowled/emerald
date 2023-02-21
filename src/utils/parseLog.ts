@@ -1,16 +1,16 @@
-import { date, deaths, join, thread, username, enclosedUsername, achievement, leave } from "./regex";
+import { informations, deaths, join, username, enclosedUsername, achievement, leave } from "./regex";
 
-export function parseLog(log: string): { type: string; content: string } {
+export function parseLog(log: string): { type: string; content: string } {    
     const potentialDeathRegex = deaths.find((rgx) => rgx.test(log)) ?? /(?!)/g;
 
     const schemes = [
-        { name: "message", rgx: [date, thread, enclosedUsername] },
-        { name: "join", rgx: [date, thread, username, join] },
-        { name: "leave", rgx: [date, thread, username, leave] },
-        { name: "achievement", rgx: [date, thread, username, achievement] },
-        { name: "death", rgx: [date, thread, username, potentialDeathRegex] },
+        { name: "message", rgx: [informations, enclosedUsername] },
+        { name: "join", rgx: [informations, username, join] },
+        { name: "leave", rgx: [informations, username, leave] },
+        { name: "achievement", rgx: [informations, username, achievement] },
+        { name: "death", rgx: [informations, username, potentialDeathRegex] },
     ];
-
+    
     for (const scheme of schemes) {
         const expression = RegExp(scheme.rgx.map((regex) => regex.source).join("\u0020"));
 

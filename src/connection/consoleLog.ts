@@ -2,7 +2,7 @@ import { WebhookClient } from "discord.js";
 
 import { lastReconnectingTime } from "./websocket";
 
-import { enclosedUsername } from "@/utils/regex";
+import { enclosedUsername, colors } from "@/utils/regex";
 import { parseLog } from "@/utils/parseLog";
 
 const config = await import("config.json");
@@ -10,7 +10,7 @@ const config = await import("config.json");
 const webhook = new WebhookClient({ url: config.discord_webhook });
 
 export async function consoleLogHandler(log: string) {
-    const parsedLog = parseLog(log);
+    const parsedLog = parseLog(log.replace(colors, ""));
 
     if (!parsedLog) {
         return;

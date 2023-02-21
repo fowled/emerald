@@ -1,6 +1,10 @@
-export const date = /\[((?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9])]?/;
+const date = /((?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9])?/;
 
-export const thread = /(?:\[(Server thread\/INFO|WARN|ERROR|FATAL)]:)?/;
+const thread = /(?:(INFO|WARN|ERROR|FATAL))/;
+
+export const colors = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+
+export const informations = RegExp(/([\s\S]*)\[/.source + [date.source, thread.source].join("\u0020") + /]:/.source);
 
 export const username = /([A-z0-9]*)?/;
 
