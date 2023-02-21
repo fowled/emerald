@@ -22,8 +22,7 @@ export async function consoleLogHandler(log: string) {
         .split(":")
         .map(Number);
 
-    // @ts-ignore
-    const messageDate = new Date().setHours(...timestamp);
+    const messageDate = new Date().setHours(...(timestamp as [number, number, number]));
 
     if (messageDate < lastReconnectingTime) {
         return;
@@ -31,17 +30,15 @@ export async function consoleLogHandler(log: string) {
 
     const emojis = { join: "🟢", leave: "🔴", death: "💀", achievement: "🏆" };
 
-    let username: string, avatarURL: string;
+    let username = "[Server]",
+        avatarURL = "https://mc-heads.net/avatar/MHF_Steve";
 
     if (parsedLog.type === "message") {
         const player = log.match(enclosedUsername).shift().replace(/[<>]/g, "");
 
         avatarURL = `https://mc-heads.net/avatar/${player}`;
         username = player;
-    } else {
-        avatarURL = "https://mc-heads.net/avatar/MHF_Steve";
-        username = "[Server]";
     }
 
-    await webhook.send({ content: `${emojis[parsedLog.type] ?? ""} ${parsedLog.content}`, username, avatarURL });
+    await webhook.send({ content: `${emojis[parsedLog.type] ?? ""} ${parsedLog.content}`.trim(), username, avatarURL });
 }
