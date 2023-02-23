@@ -1,10 +1,26 @@
-const date = /((?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9])?/;
+const { logs_format } = await import("config.json");
 
-const thread = /(?:(INFO|WARN|ERROR|FATAL))/;
+export let informations: RegExp;
+
+switch (logs_format) {
+    case "paper": {
+        let date = /((?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9])?/;
+        let thread = /(?:(INFO|WARN|ERROR|FATAL))/;
+
+        informations = RegExp(/([\s\S]*)\[/.source + [date.source, thread.source].join("\u0020") + /]:/.source);
+        break;
+    }
+
+    case "vanilla": {
+        let date = /([\s\S]*)\[((?:[0-1][0-9]|2[0-3]):?[0-5][0-9]:?[0-5][0-9])]?/;
+        let thread = /(?:\[(Server thread\/INFO|WARN|ERROR|FATAL)]:)?/;
+
+        informations = RegExp([date.source, thread.source].join("\u0020"));
+        break;
+    }
+}
 
 export const colors = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
-
-export const informations = RegExp(/([\s\S]*)\[/.source + [date.source, thread.source].join("\u0020") + /]:/.source);
 
 export const username = /([A-z0-9]*)?/;
 
