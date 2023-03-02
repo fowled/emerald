@@ -4,18 +4,16 @@ import { menu } from "@/components/Places";
 
 import { i18n } from "@/utils/i18n";
 
+const { description, addButton } = i18n("places");
+
 module.exports = {
     name: "places",
-    description: i18n("description", "places"),
+    description,
     category: "misc",
 
     async execute(_: Client, interaction: ChatInputCommandInteraction) {
         const button = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-                .setCustomId(`place_add_modal`)
-                .setStyle(3)
-                .setLabel(i18n("addButton", "places"))
-                .setEmoji("➕"),
+            new ButtonBuilder().setCustomId(`place_add_modal`).setStyle(3).setLabel(addButton).setEmoji("➕"),
 
             new ButtonBuilder().setCustomId(`place_refresh_null`).setStyle(1).setEmoji("🔄")
         );

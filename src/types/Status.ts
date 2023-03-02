@@ -1,4 +1,4 @@
-export enum StatusEnum {
+export enum Status {
     Preparing = 10,
     Loading = 6,
     Saving = 5,

@@ -8,6 +8,8 @@ import { i18n } from "@/utils/i18n";
 
 import type { Trade } from "@/types/DB";
 
+const { modalTradeEditTitle, successTradeEditMessage, selectMenuTradeEditPlaceholder, errorTradeMessage } = i18n("trades");
+
 module.exports = {
     name: "editTrade",
 
@@ -20,9 +22,7 @@ module.exports = {
             case "modal":
                 tradeId = (interaction as StringSelectMenuInteraction).values.at(0);
 
-                modal
-                    .setCustomId("trades_edit_submitted_" + tradeId + "_" + placeId)
-                    .setTitle(i18n("modalTradeEditTitle", "trades"));
+                modal.setCustomId("trades_edit_submitted_" + tradeId + "_" + placeId).setTitle(modalTradeEditTitle);
 
                 await (interaction as ButtonInteraction).showModal(modal);
                 break;
@@ -30,14 +30,12 @@ module.exports = {
             case "submitted":
                 tradeId = interaction.customId.split("_").at(3);
 
-                const [receiving, giving] = (interaction as ModalSubmitInteraction).fields.fields.map(
-                    (field) => field.value
-                );
+                const [receiving, giving] = (interaction as ModalSubmitInteraction).fields.fields.map((field) => field.value);
 
                 await pb.collection("trades").update<Trade>(tradeId, { receiving, giving });
 
                 await interaction.editReply({
-                    content: i18n("successTradeEditMessage", "trades"),
+                    content: successTradeEditMessage,
                     components: [],
                 });
                 break;
@@ -48,10 +46,7 @@ module.exports = {
                 try {
                     const selectMenu = await menu(placeId);
 
-                    selectMenu.components
-                        .at(0)
-                        .setCustomId("trades_edit_modal")
-                        .setPlaceholder(i18n("selectMenuTradeEditPlaceholder", "trades"));
+                    selectMenu.components.at(0).setCustomId("trades_edit_modal").setPlaceholder(selectMenuTradeEditPlaceholder);
 
                     await interaction.followUp({ components: [selectMenu], ephemeral: true });
                     break;
@@ -59,7 +54,7 @@ module.exports = {
                     await interaction.editReply({
                         components: [],
                         embeds: [],
-                        content: i18n("errorTradeMessage", "trades"),
+                        content: errorTradeMessage,
                     });
                     break;
                 }

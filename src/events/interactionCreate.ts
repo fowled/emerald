@@ -62,11 +62,7 @@ module.exports = {
             }
         }
 
-        if (
-            !interaction.isChatInputCommand() ||
-            !interaction.isCommand() ||
-            !clientInteractions.has(interaction.commandName)
-        ) {
+        if (!interaction.isChatInputCommand() || !interaction.isCommand() || !clientInteractions.has(interaction.commandName)) {
             return;
         }
 

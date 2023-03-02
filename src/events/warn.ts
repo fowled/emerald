@@ -1,11 +1,11 @@
 import { Client } from "discord.js";
 
-import { error } from "@/utils/logger";
+import { warn } from "@/utils/logger";
 
 module.exports = {
-    name: "error",
+    name: "warn",
 
     async execute(_: Client, err: Error) {
-        return error(err);
+        return warn(err);
     },
 };

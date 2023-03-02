@@ -2,9 +2,13 @@ import { ChatInputCommandInteraction, Client } from "discord.js";
 
 import { Server } from "@/components/Server";
 
+import { i18n } from "@/utils/i18n";
+
+const { description } = i18n("status");
+
 module.exports = {
     name: "status",
-    description: "Affiche des informations à propos du serveur",
+    description,
     category: "misc",
 
     async execute(_: Client, interaction: ChatInputCommandInteraction) {

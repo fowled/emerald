@@ -1,4 +1,4 @@
-import { Client, CommandInteraction } from "discord.js";
+import type { Client, CommandInteraction } from "discord.js";
 
 export interface Command {
     name: string;

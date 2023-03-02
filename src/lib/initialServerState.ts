@@ -2,12 +2,14 @@ import { JSDOM } from "jsdom";
 
 import { statusChange } from "@/connection/statusChange";
 
-import { StatusEnum } from "@/types/Status";
+import { Status } from "@/types/Status";
+
+import { getConfig } from "@/utils/config";
 
 import type { Client } from "discord.js";
 import type WebSocket from "ws";
 
-const config = await import("config.json");
+const config = await getConfig();
 
 export async function checkInitialServerState(websocket: WebSocket, Client: Client) {
     const request = await fetch("https://aternos.org/players/", {
@@ -29,9 +31,10 @@ export async function checkInitialServerState(websocket: WebSocket, Client: Clie
         }
     }
 
-    return statusChange(
-        { status: StatusEnum[getStatus.charAt(0).toUpperCase() + getStatus.slice(1)], playerlist },
-        websocket,
-        Client
-    );
+    const status = {
+        status: Status[getStatus.charAt(0).toUpperCase() + getStatus.slice(1)],
+        playerlist,
+    };
+
+    return statusChange(status, websocket, Client);
 }

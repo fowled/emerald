@@ -1,6 +1,6 @@
 import { informations, deaths, join, username, enclosedUsername, achievement, leave } from "./regex";
 
-export function parseLog(log: string): { type: string; content: string } {    
+export function parseLog(log: string): { type: string; content: string } {
     const potentialDeathRegex = deaths.find((rgx) => rgx.test(log)) ?? /(?!)/g;
 
     const schemes = [
@@ -10,7 +10,7 @@ export function parseLog(log: string): { type: string; content: string } {
         { name: "achievement", rgx: [informations, username, achievement] },
         { name: "death", rgx: [informations, username, potentialDeathRegex] },
     ];
-    
+
     for (const scheme of schemes) {
         const expression = RegExp(scheme.rgx.map((regex) => regex.source).join("\u0020"));
 
@@ -26,7 +26,7 @@ function getMsgContent(log: string, scheme: string, schemes: { name: string; rgx
     const findScheme = schemes.find((sch) => sch.name === scheme);
 
     const combineRegexes = [];
-    
+
     for (const regex of findScheme.rgx) {
         if (![join, leave, username, achievement, death].includes(regex)) {
             combineRegexes.push(regex.source);

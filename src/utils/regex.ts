@@ -1,4 +1,6 @@
-const { logs_format } = await import("config.json");
+import { getConfig } from "./config";
+
+const { logs_format } = await getConfig();
 
 export let informations: RegExp;
 

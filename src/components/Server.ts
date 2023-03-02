@@ -11,19 +11,21 @@ import { serverStatus } from "@/index";
 
 import { i18n } from "@/utils/i18n";
 
-import { StatusEnum } from "@/types/Status";
+import { Status } from "@/types/Status";
+
+const { online, starting, preparing, loading, offline, stopping, saving, label, update, players, countdown } = i18n("server");
 
 export async function Server(interaction: ChatInputCommandInteraction | ButtonInteraction | Message) {
     const status = serverStatus.get("status");
 
     const display = {
-        [StatusEnum.Online]: { text: i18n("onlineStatus", "server"), emoji: "🟢", color: "Green" },
-        [StatusEnum.Starting]: { text: i18n("startingStatus", "server"), emoji: "🟠", color: "Orange" },
-        [StatusEnum.Preparing]: { text: i18n("preparingStatus", "server"), emoji: "🟠", color: "Orange" },
-        [StatusEnum.Loading]: { text: i18n("loadingStatus", "server"), emoji: "🟠", color: "Orange" },
-        [StatusEnum.Offline]: { text: i18n("offlineStatus", "server"), emoji: "🔴", color: "Red" },
-        [StatusEnum.Stopping]: { text: i18n("stoppingStatus", "server"), emoji: "🔴", color: "Red" },
-        [StatusEnum.Saving]: { text: i18n("savingStatus", "server"), emoji: "🔴", color: "Red" },
+        [Status.Online]: { text: online, emoji: "🟢", color: "Green" },
+        [Status.Starting]: { text: starting, emoji: "🟠", color: "Orange" },
+        [Status.Preparing]: { text: preparing, emoji: "🟠", color: "Orange" },
+        [Status.Loading]: { text: loading, emoji: "🟠", color: "Orange" },
+        [Status.Offline]: { text: offline, emoji: "🔴", color: "Red" },
+        [Status.Stopping]: { text: stopping, emoji: "🔴", color: "Red" },
+        [Status.Saving]: { text: saving, emoji: "🔴", color: "Red" },
     };
 
     const currentDisplay = display[status.code.toString()];
@@ -32,13 +34,13 @@ export async function Server(interaction: ChatInputCommandInteraction | ButtonIn
         .setDescription(null)
         .addFields(
             {
-                name: i18n("statusLabel", "server"),
+                name: label,
                 value: `${currentDisplay.emoji} ${currentDisplay.text}`,
                 inline: true,
             },
 
             {
-                name: i18n("lastUpdateLabel", "server"),
+                name: update,
                 value: `<t:${Math.floor(new Date().getTime() / 1000)}:R>`,
                 inline: true,
             }
@@ -46,25 +48,21 @@ export async function Server(interaction: ChatInputCommandInteraction | ButtonIn
         .setColor(currentDisplay.color);
 
     if (status?.players?.length > 0) {
-        embed.addFields([
-            {
-                name: i18n("playersLabel", "server"),
-                value: `\`${status.players.join("\n")}\``,
-                inline: true,
-            },
-        ]);
+        embed.addFields({
+            name: players,
+            value: `\`${status.players.join("\n")}\``,
+            inline: true,
+        });
     }
 
     if (status.countdown) {
         const date = new Date().getTime();
 
-        embed.addFields([
-            {
-                name: i18n("countdownLabel", "server"),
-                value: `<t:${Math.floor((date + status.countdown * 1000) / 1000)}:R>`,
-                inline: true,
-            },
-        ]);
+        embed.addFields({
+            name: countdown,
+            value: `<t:${Math.floor((date + status.countdown * 1000) / 1000)}:R>`,
+            inline: true,
+        });
     }
 
     const button = new ActionRowBuilder<ButtonBuilder>().addComponents(

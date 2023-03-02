@@ -8,6 +8,8 @@ import { i18n } from "@/utils/i18n";
 
 import type { Place } from "@/types/DB";
 
+const { modalEditTitle, successPlaceEditMessage } = i18n("places");
+
 module.exports = {
     name: "editPlace",
 
@@ -20,7 +22,7 @@ module.exports = {
             case "modal":
                 const editPlaceModal = modal(true)
                     .setCustomId("place_edit_submitted_" + getPlaceId)
-                    .setTitle(i18n("modalEditTitle", "places"));
+                    .setTitle(modalEditTitle);
 
                 await (interaction as ButtonInteraction).showModal(editPlaceModal);
                 break;
@@ -44,7 +46,7 @@ module.exports = {
 
                 await pb.collection("places").update(place.id, editData);
 
-                await interaction.followUp({ content: i18n("successPlaceEditMessage", "places"), ephemeral: true });
+                await interaction.followUp({ content: successPlaceEditMessage, ephemeral: true });
                 break;
         }
     },

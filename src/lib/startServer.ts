@@ -1,7 +1,8 @@
+import { getConfig } from "@/utils/config";
 import rdm from "randomstring";
 
 export async function startServer() {
-    const { aternos_session, aternos_token, aternos_server_id } = await import("config.json");
+    const { aternos_session, aternos_token, aternos_server_id } = await getConfig();
 
     const key = rdm.generate({ length: 8 }) + "00000";
     const value = rdm.generate({ length: 8 }) + "00000";
@@ -19,7 +20,7 @@ export async function startServer() {
     try {
         const response = await request.json();
 
-        if (response.success) {          
+        if (response.success) {
             return (status = 1);
         } else {
             return (status = 2);

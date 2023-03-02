@@ -1,8 +1,10 @@
 import { JSDOM } from "jsdom";
 import fs from "fs";
 
+import { getConfig, writeConfig } from "@/utils/config";
+
 export async function extractToken() {
-    const config = await import("config.json");
+    const config = await getConfig();
 
     const page = await fetch("https://aternos.org/servers/", {
         headers: {
@@ -23,7 +25,7 @@ export async function extractToken() {
     let success: boolean;
 
     if (aternos_token !== null && typeof aternos_token === "string") {
-        fs.writeFileSync("config.json", JSON.stringify({ ...config.default, aternos_token }, null, 4));
+        writeConfig({ ...config.default, aternos_token });
 
         return (success = true);
     } else {

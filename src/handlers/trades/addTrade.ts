@@ -8,6 +8,8 @@ import { i18n } from "@/utils/i18n";
 
 import type { Place } from "@/types/DB";
 
+const { modalAddTitle } = i18n("trades");
+
 module.exports = {
     name: "addTrade",
 
@@ -18,7 +20,7 @@ module.exports = {
 
         switch (instruction) {
             case "modal":
-                modal.setCustomId("trades_add_submitted_" + getPlaceId).setTitle(i18n("modalAddTitle", "trades"));
+                modal.setCustomId("trades_add_submitted_" + getPlaceId).setTitle(modalAddTitle);
 
                 await (interaction as ButtonInteraction).showModal(modal);
                 break;
@@ -26,9 +28,7 @@ module.exports = {
             case "submitted":
                 const getPlace = await pb.collection("places").getFirstListItem<Place>(`place_id=${getPlaceId}`);
 
-                const [receiving, giving] = (interaction as ModalSubmitInteraction).fields.fields.map(
-                    (field) => field.value
-                );
+                const [receiving, giving] = (interaction as ModalSubmitInteraction).fields.fields.map((field) => field.value);
 
                 const createTrade = await pb.collection("trades").create({ receiving, giving });
 

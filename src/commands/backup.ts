@@ -7,33 +7,31 @@ import { clientInteractions } from "@/index";
 
 import { i18n } from "@/utils/i18n";
 
+const { description, success, error, invalidToken } = i18n("backup");
+
 module.exports = {
     name: "backup",
-    description: i18n("description", "backup"),
+    description,
     category: "misc",
 
     async execute(Client: Client, interaction: ChatInputCommandInteraction, args: string[]) {
-        const success = await createBackup();
+        const result = await createBackup();
 
-        switch (success) {
+        switch (result) {
             case 1:
-                const backupCreated = new EmbedBuilder().setDescription(i18n("success", "backup")).setColor("Green");
-
-                await interaction.editReply({ embeds: [backupCreated] });
+                await interaction.editReply({
+                    embeds: [new EmbedBuilder().setDescription(success).setColor("Green")],
+                });
                 break;
 
             case 2:
-                const error = new EmbedBuilder().setDescription(i18n("error", "backup")).setColor("Red");
-
-                await interaction.editReply({ embeds: [error] });
+                await interaction.editReply({ embeds: [new EmbedBuilder().setDescription(error).setColor("Red")] });
                 break;
 
             case 3:
-                const invalidToken = new EmbedBuilder()
-                    .setDescription(i18n("invalidToken", "backup"))
-                    .setColor("Orange");
-
-                await interaction.editReply({ embeds: [invalidToken] });
+                await interaction.editReply({
+                    embeds: [new EmbedBuilder().setDescription(invalidToken).setColor("Orange")],
+                });
 
                 await extractToken();
 

@@ -1,0 +1,86 @@
+{
+    "setup": {
+        "description": "Exécute cette commande si tu viens de télécharger le code du bot !",
+        "status": "Le channel où sera posté le statut du serveur MC en temps réel",
+        "alreadyRan": "<:no:835565213322575963> Tu as déjà effectué le setup du bot !",
+        "interchat": "Le channel où seront postés les messages interchat MC <-> Discord",
+        "missingPerm": "On dirait que je n'ai pas la permission de créer des webhooks. Je ne peux pas continuer le setup.",
+        "info": "Ce message sera actualisé dans peu de temps avec des infos en temps réel sur le serveur Minecraft.",
+        "textChannel": "Un des deux channels n'est pas un channel textuel. Veuillez réessayer.",
+        "success": "<:yes:835565213498736650> La configuration du bot a été modifiée avec succès ! Redémarre-le dans la console pour que les changements soient effectifs.",
+        "error": "<:no:835565213322575963> Le fichier de configuration n'a pas pu être sauvegardé !"
+    },
+
+    "status": {
+        "description": "Affiche des informations sur le serveur Minecraft"
+    },
+
+    "backup": {
+        "description": "Creates a server backup",
+        "success": "<:yes:835565213498736650> A backup has successfully been created!",
+        "error": "<:no:835565213322575963> An unknown error has occured.",
+        "invalidToken": ":warning: Security token seems invalid. Trying to extract a new one..."
+    },
+
+    "places": {
+        "description": "Lists all server's places",
+        "coordinatesLabel": "Coordinates",
+        "addButton": "Add",
+        "editButton": "Edit",
+        "deleteButton": "Delete",
+        "selectMenuPlaceholder": "Select a place",
+        "modalAddTitle": "Add a place",
+        "modalEditTitle": "Edit a place",
+        "modalDescriptionInput": "Write a short description of the place",
+        "modalDimensionInput": "In what dimension is it located?",
+        "modalXInput": "Enter the X coordinate",
+        "modalYInput": "Enter the Y coordinate",
+        "modalZInput": "Enter the Z coordinate",
+        "invalidCoordsMessage": "Coords are invalid. Make sure to enter numbers only.",
+        "invalidDimensionMessage": "Dimension must be one of these: `overworld`, `nether`, `end`.",
+        "successfulPlaceAddMessage": "Successfully added the new place :+1:",
+        "confirmPlaceDeleteButton": "Yep, go ahead",
+        "confirmPlaceDeleteMessage": "Do you really want to delete that place?",
+        "errorPlaceDeleteMessage": "There doesn't seem to be a place with this id.",
+        "successPlaceDeleteMessage": "Successfully deleted that place :+1:",
+        "successPlaceEditMessage": "Successfully edited that place :+1:"
+    },
+
+    "start": {
+        "description": "Boots up the server",
+        "success": "<:yes:835565213498736650> Server has successfully booted up!",
+        "error": "<:no:835565213322575963> Server is already online!",
+        "invalidToken": ":warning: Security token seems invalid. Trying to extract a new one..."
+    },
+
+    "server": {
+        "online": "Open",
+        "starting": "Starting",
+        "preparing": "Preparing",
+        "loading": "Loading",
+        "offline": "Offline",
+        "stopping": "Stopping",
+        "saving": "Saving",
+        "label": "Status",
+        "update": "Last update",
+        "countdown": "Countdown",
+        "players": "Players"
+    },
+
+    "trades": {
+        "modalAddTitle": "Add a trade",
+        "modalEditTitle": "Edit a trade",
+        "modalReceivingInput": "What does the villager offer?",
+        "modalGivingInput": "What should you give him in return?",
+        "addButton": "Add",
+        "editButton": "Edit",
+        "deleteButton": "Delete",
+        "generalButton": "Main",
+        "selectMenuTradeDeletePlaceholder": "Select the trade you want to delete",
+        "errorTradeMessage": "Looks like there isn't any trade linked to this place.",
+        "successTradeDeleteMessage": "Successfully deleted trade :+1:",
+        "modalTradeEditTitle": "Edit a trade",
+        "selectMenuTradeEditPlaceholder": "Select the trade you want to edit",
+        "successTradeEditMessage": "Successfully edited trade :+1:"
+    }
+}

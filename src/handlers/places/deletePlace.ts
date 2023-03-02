@@ -6,6 +6,8 @@ import { i18n } from "@/utils/i18n";
 
 import type { Place } from "@/types/DB";
 
+const { confirmPlaceDeleteButton, confirmPlaceDeleteMessage, errorPlaceDeleteMessage, successPlaceDeleteMessage } = i18n("places");
+
 module.exports = {
     name: "deletePlace",
 
@@ -22,11 +24,11 @@ module.exports = {
                         .setCustomId(`place_delete_confirm_${getPlaceId}`)
                         .setStyle(4)
                         .setEmoji("⚠️")
-                        .setLabel(i18n("confirmPlaceDeleteButton", "places"))
+                        .setLabel(confirmPlaceDeleteButton)
                 );
 
                 interaction.followUp({
-                    content: i18n("confirmPlaceDeleteMessage", "places"),
+                    content: confirmPlaceDeleteMessage,
                     ephemeral: true,
                     components: [verification],
                 });
@@ -39,13 +41,13 @@ module.exports = {
                     await pb.collection("places").delete(findPlace.id);
                 } else {
                     return interaction.editReply({
-                        content: i18n("errorPlaceDeleteMessage", "places"),
+                        content: errorPlaceDeleteMessage,
                         components: [],
                     });
                 }
 
                 interaction.editReply({
-                    content: i18n("successPlaceDeleteMessage", "places"),
+                    content: successPlaceDeleteMessage,
                     components: [],
                 });
                 break;

@@ -4,7 +4,7 @@ import { serverStatus, events } from "@/index";
 
 import { ws } from "@/utils/logger";
 
-import { StatusEnum } from "@/types/Status";
+import { Status } from "@/types/Status";
 
 import type { Client } from "discord.js";
 import type WebSocket from "ws";
@@ -30,11 +30,11 @@ export const closeConsoleStream = (websocket: WebSocket) => {
 export async function statusChange(message: Message, websocket: WebSocket, Client: Client) {
     const status = serverStatus.get("status")?.code;
 
-    if (message.status === StatusEnum.Online && status !== StatusEnum.Online) {
+    if (message.status === Status.Online && status !== Status.Online) {
         openConsoleStream(websocket);
     }
 
-    if (message.status === StatusEnum.Offline && status !== StatusEnum.Offline) {
+    if (message.status === Status.Offline && ![Status.Offline, undefined].includes(status)) {
         closeConsoleStream(websocket);
     }
 

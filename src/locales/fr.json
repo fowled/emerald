@@ -1,0 +1,86 @@
+{
+    "setup": {
+        "description": "Exécute cette commande si tu viens de télécharger le code du bot !",
+        "status": "Le channel où sera posté le statut du serveur MC en temps réel",
+        "alreadyRan": "<:no:835565213322575963> Tu as déjà effectué le setup du bot !",
+        "interchat": "Le channel où seront postés les messages interchat MC <-> Discord",
+        "missingPerm": "On dirait que je n'ai pas la permission de créer des webhooks. Je ne peux pas continuer le setup.",
+        "info": "Ce message sera actualisé dans peu de temps avec des infos en temps réel sur le serveur Minecraft.",
+        "textChannel": "Un des deux channels n'est pas un channel textuel. Veuillez réessayer.",
+        "success": "<:yes:835565213498736650> La configuration du bot a été modifiée avec succès ! Redémarre-le dans la console pour que les changements soient effectifs.",
+        "error": "<:no:835565213322575963> Le fichier de configuration n'a pas pu être sauvegardé !"
+    },
+
+    "status": {
+        "description": "Affiche des informations sur le serveur Minecraft"
+    },
+
+    "backup": {
+        "description": "Crée un backup du serveur",
+        "success": "<:yes:835565213498736650> Le backup a bien été crée !",
+        "error": "<:no:835565213322575963> Une erreur inconnue est survenue.",
+        "invalidToken": ":warning: Le jeton de sécurité est invalide. Essai d'extraction..."
+    },
+
+    "places": {
+        "description": "Liste d'endroits sympa du serveur",
+        "coordinatesLabel": "Coordonnées",
+        "addButton": "Ajouter",
+        "editButton": "Modifier",
+        "deleteButton": "Supprimer",
+        "selectMenuPlaceholder": "Choisis un endroit",
+        "modalAddTitle": "Ajouter un endroit",
+        "modalEditTitle": "Modifier un endroit",
+        "modalDescriptionInput": "Écris une courte description de l'endroit",
+        "modalDimensionInput": "Dans quelle dimension se trouve-t-il ?",
+        "modalXInput": "Donne le coordonnée X",
+        "modalYInput": "Donne le coordonnée Y",
+        "modalZInput": "Donne le coordonnée Z",
+        "invalidCoordsMessage": "Tes coordonnées n'ont pas l'air valides. Assure-toi de ne rentrer que des nombres.",
+        "invalidDimensionMessage": "La dimension doit être une des suivantes : `overworld`, `nether`, ou `end`",
+        "successfulPlaceAddMessage": "J'ai ajouté le nouvel endroit :+1:",
+        "confirmPlaceDeleteButton": "Je confirme",
+        "confirmPlaceDeleteMessage": "Es-tu certain de vouloir supprimer cet endroit ?",
+        "errorPlaceDeleteMessage": "Il n'existe pas d'endroit avec cet identifiant.",
+        "successPlaceDeleteMessage": "L'endroit a été supprimé :+1:",
+        "successPlaceEditMessage": "L'endroit a été modifié :+1:"
+    },
+
+    "start": {
+        "description": "Démarre le serveur",
+        "success": "<:yes:835565213498736650> Le serveur a démarré !",
+        "error": "<:no:835565213322575963> Le serveur est déjà allumé !",
+        "invalidToken": ":warning: Le jeton de sécurité est invalide. Essai d'extraction..."
+    },
+
+    "server": {
+        "online": "Ouvert",
+        "starting": "Démarrage",
+        "preparing": "Préparation",
+        "loading": "Chargement",
+        "offline": "Fermé",
+        "stopping": "Fermeture",
+        "saving": "Sauvegarde",
+        "label": "Statut",
+        "update": "Dernière update",
+        "countdown": "Fermeture",
+        "players": "Joueurs"
+    },
+
+    "trades": {
+        "modalAddTitle": "Ajouter un trade",
+        "modalEditTitle": "Modifier un trade",
+        "modalReceivingInput": "Que propose le villageois ?",
+        "modalGivingInput": "Que doit-on lui donner en échange ?",
+        "addButton": "Ajouter",
+        "editButton": "Modifier",
+        "deleteButton": "Supprimer",
+        "generalButton": "Général",
+        "selectMenuTradeDeletePlaceholder": "Choisis le trade à supprimer",
+        "errorTradeMessage": "On dirait qu'il n'y a aucun trade associé à cet endroit.",
+        "successTradeDeleteMessage": "J'ai supprimé le trade :+1:",
+        "modalTradeEditTitle": "Modifier un trade",
+        "selectMenuTradeEditPlaceholder": "Choisis le trade à modifier",
+        "successTradeEditMessage": "J'ai modifié le trade :+1:"
+    }
+}

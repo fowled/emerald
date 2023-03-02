@@ -5,9 +5,10 @@
         "moduleResolution": "Node",
         "module": "ESNext",
         "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "target": "ESNext",
         "baseUrl": "./",
-        "lib": ["ESNext", "DOM"],
+        "lib": ["ESNext"],
         "paths": {
             "@/*": ["./src/*"]
         }

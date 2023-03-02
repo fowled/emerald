@@ -4,6 +4,8 @@ import { embed, actions, controls } from "@/components/Trades";
 
 import { i18n } from "@/utils/i18n";
 
+const { generalButton, addButton, errorTradeMessage } = i18n("trades");
+
 module.exports = {
     name: "trades",
 
@@ -18,21 +20,17 @@ module.exports = {
             });
         } catch (error) {
             const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-                new ButtonBuilder()
-                    .setCustomId(`place_select_${getPlaceId}`)
-                    .setLabel(i18n("generalButton", "trades"))
-                    .setEmoji("ℹ️")
-                    .setStyle(1),
+                new ButtonBuilder().setCustomId(`place_select_${getPlaceId}`).setLabel(generalButton).setEmoji("ℹ️").setStyle(1),
 
                 new ButtonBuilder()
                     .setCustomId("trades_add_modal_" + getPlaceId)
                     .setStyle(3)
-                    .setLabel(i18n("addButton", "trades"))
+                    .setLabel(addButton)
                     .setEmoji("➕")
             );
 
             return await interaction.editReply({
-                content: i18n("errorTradeMessage", "trades"),
+                content: errorTradeMessage,
                 components: [buttons],
                 embeds: [],
             });

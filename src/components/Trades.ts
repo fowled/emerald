@@ -14,6 +14,8 @@ import { i18n } from "@/utils/i18n";
 
 import type { Place } from "@/types/DB";
 
+const locales = i18n("trades");
+
 const fetchPlace = async (placeId: string) => {
     return await pb.collection("places").getFirstListItem<Place>(`place_id=${placeId}`, { expand: "trades" });
 };
@@ -28,15 +30,12 @@ export const modal = new ModalBuilder().addComponents(
     new ActionRowBuilder<TextInputBuilder>().addComponents(
         new TextInputBuilder()
             .setCustomId("modal_first_value")
-            .setLabel(i18n("modalReceivingInput", "trades"))
+            .setLabel(locales.modalReceivingInput)
             .setStyle(TextInputStyle.Short)
     ),
 
     new ActionRowBuilder<TextInputBuilder>().addComponents(
-        new TextInputBuilder()
-            .setCustomId("modal_second_value")
-            .setLabel(i18n("modalGivingInput", "trades"))
-            .setStyle(TextInputStyle.Short)
+        new TextInputBuilder().setCustomId("modal_second_value").setLabel(locales.modalGivingInput).setStyle(TextInputStyle.Short)
     )
 );
 
@@ -66,14 +65,11 @@ export const menu = async (placeId: string) => {
     let selectMenuOptions = [];
 
     for (const trade of place.expand.trades) {
-        selectMenuOptions = [
-            ...selectMenuOptions,
-            {
-                label: trade.receiving,
-                description: trade.giving,
-                value: trade.id,
-            },
-        ];
+        selectMenuOptions.push({
+            label: trade.receiving,
+            description: trade.giving,
+            value: trade.id,
+        });
     }
 
     return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
@@ -85,23 +81,9 @@ export const actions = async (placeId: string) => {
     filter(await fetchPlace(placeId));
 
     return new ActionRowBuilder<ButtonBuilder>().addComponents(
-        new ButtonBuilder()
-            .setCustomId(`trades_add_modal_${placeId}`)
-            .setLabel(i18n("addButton", "trades"))
-            .setEmoji("➕")
-            .setStyle(3),
-
-        new ButtonBuilder()
-            .setCustomId(`trades_edit_${placeId}`)
-            .setLabel(i18n("editButton", "trades"))
-            .setEmoji("✏️")
-            .setStyle(1),
-
-        new ButtonBuilder()
-            .setCustomId(`trades_delete_${placeId}`)
-            .setLabel(i18n("deleteButton", "trades"))
-            .setEmoji("🗑️")
-            .setStyle(4)
+        new ButtonBuilder().setCustomId(`trades_add_modal_${placeId}`).setLabel(locales.addButton).setEmoji("➕").setStyle(3),
+        new ButtonBuilder().setCustomId(`trades_edit_${placeId}`).setLabel(locales.editButton).setEmoji("✏️").setStyle(1),
+        new ButtonBuilder().setCustomId(`trades_delete_${placeId}`).setLabel(locales.deleteButton).setEmoji("🗑️").setStyle(4)
     );
 };
 
@@ -109,12 +91,7 @@ export const controls = async (placeId: string) => {
     filter(await fetchPlace(placeId));
 
     return new ActionRowBuilder<ButtonBuilder>().addComponents(
-        new ButtonBuilder()
-            .setCustomId(`place_select_${placeId}`)
-            .setLabel(i18n("generalButton", "trades"))
-            .setEmoji("ℹ️")
-            .setStyle(1),
-
+        new ButtonBuilder().setCustomId(`place_select_${placeId}`).setLabel(locales.generalButton).setEmoji("ℹ️").setStyle(1),
         new ButtonBuilder().setCustomId(`trades_refresh_${placeId}`).setEmoji("🔄").setStyle(1)
     );
 };

@@ -2,23 +2,29 @@ import { Client, Message } from "discord.js";
 
 import { websocket } from "@/connection/websocket";
 
+import { getConfig } from "@/utils/config";
+
 import { serverStatus } from "@/index";
 
-import { StatusEnum } from "@/types/Status";
+import { Status } from "@/types/Status";
 
 module.exports = {
     name: "messageCreate",
 
     async execute(_: Client, message: Message) {
-        if (message.author.bot || message.content.startsWith("//")) {
-            return;
-        }
-
-        const config = await import("config.json");
+        const config = await getConfig();
 
         const status = serverStatus.get("status").code;
 
-        if (message.channel.id !== config.chat_channel || status !== StatusEnum.Online) {
+        const conditions = [
+            !config.chat_channel,
+            message.author.bot,
+            message.content.startsWith("//"),
+            message.channel.id !== config.chat_channel,
+            status !== Status.Online,
+        ];
+
+        if (!conditions.every((el) => el === true)) {
             return;
         }
 

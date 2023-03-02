@@ -4,15 +4,16 @@ import { lastReconnectingTime } from "./websocket";
 
 import { enclosedUsername, colors } from "@/utils/regex";
 import { parseLog } from "@/utils/parseLog";
+import { getConfig } from "@/utils/config";
 
-const config = await import("config.json");
+const { discord_webhook, chat_channel } = await getConfig();
 
-const webhook = new WebhookClient({ url: config.discord_webhook });
+const webhook = discord_webhook ? new WebhookClient({ url: discord_webhook }) : null;
 
 export async function consoleLogHandler(log: string) {
     const parsedLog = parseLog(log.replace(colors, ""));
 
-    if (!parsedLog) {
+    if (!chat_channel || !discord_webhook || !parsedLog) {
         return;
     }
 

@@ -6,6 +6,8 @@ import { i18n } from "@/utils/i18n";
 
 import { pb } from "@/index";
 
+const { successTradeDeleteMessage, selectMenuTradeDeletePlaceholder, errorTradeMessage } = i18n("trades");
+
 module.exports = {
     name: "deleteTrade",
 
@@ -21,7 +23,7 @@ module.exports = {
                 await pb.collection("trades").delete(tradeId);
 
                 await interaction.editReply({
-                    content: i18n("successTradeDeleteMessage", "trades"),
+                    content: successTradeDeleteMessage,
                     components: [],
                 });
                 break;
@@ -35,7 +37,7 @@ module.exports = {
                     selectMenu.components
                         .at(0)
                         .setCustomId("trades_delete_submitted")
-                        .setPlaceholder(i18n("selectMenuTradeDeletePlaceholder", "trades"));
+                        .setPlaceholder(selectMenuTradeDeletePlaceholder);
 
                     await interaction.followUp({ components: [selectMenu], ephemeral: true });
                     break;
@@ -43,7 +45,7 @@ module.exports = {
                     await interaction.editReply({
                         components: [],
                         embeds: [],
-                        content: i18n("errorTradeMessage", "trades"),
+                        content: errorTradeMessage,
                     });
                     break;
                 }

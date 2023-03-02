@@ -4,11 +4,14 @@ import pocketbase from "pocketbase";
 import glob from "fast-glob";
 import chalk from "chalk";
 
-import { log, warn } from "@/utils/logger";
+import { parallelMap } from "@/utils/parallelMap";
+import { error, log, warn } from "@/utils/logger";
+import { getConfig } from "@/utils/config";
 
 import type { Command } from "@/types/Command";
+import type { Event } from "@/types/Event";
 
-const config = await import("config.json");
+const config = await getConfig();
 
 const client = new Client({
     intents: ["Guilds", "GuildMembers", "GuildMessages", "GuildMessageReactions", "GuildBans", "MessageContent"],
@@ -22,44 +25,51 @@ export const events = new EventEmitter();
 
 export const serverStatus = new Collection<string, { code: number; players?: string[]; countdown?: number }>();
 
-binder();
+main();
 
-await pb.admins.authWithPassword(config.pocketbase_mail, config.pocketbase_pwd);
+async function main() {
+    switch (config.setup) {
+        case undefined:
+            error("Config file not completed. Aborting...");
+            process.exit(1);
 
-process.on("unhandledRejection", (error: Error) => {
-    warn(error);
-});
+        case false:
+            warn(`You haven't entirely completed the bot setup! Run ${chalk.yellow("/setup")} in your Discord server.`);
+            break;
+    }
 
-async function binder() {
-    const eventFiles = glob.sync("src/events/*.ts");
-    const customEventFiles = glob.sync("src/handlers/**/*.ts");
-    const commandFiles = glob.sync("src/commands/**/*.ts");
+    const toBind = [
+        {
+            path: "src/events/*.ts",
+            handler: (exe: Event) => {
+                client[exe.once ? "once" : "on"](exe.name, async (...args) => await exe.execute(client, ...args));
+            },
+        },
 
-    await Promise.all([
-        eventFiles.map(async (file) => {
-            const event = (await import(file)).default;
+        {
+            path: "src/commands/**/*.ts",
+            handler: (exe: Command) => {
+                clientInteractions.set(exe.name, exe);
+            },
+        },
 
-            if (event.once) {
-                client.once(event.name, async (...args) => await event.execute(client, ...args));
-            } else {
-                client.on(event.name, async (...args) => await event.execute(client, ...args));
-            }
-        }),
+        {
+            path: "src/handlers/**/*.ts",
+            handler: (exe: Event) => {
+                events.on(exe.name, async (...args) => await exe.execute(client, ...args));
+            },
+        },
+    ];
 
-        commandFiles.map(async (file) => {
-            const command: Command = (await import(file)).default;
-
-            clientInteractions.set(command.name, command);
-        }),
-
-        customEventFiles.map(async (file) => {
-            const event = (await import(file)).default;
-
-            events.on(event.name, async (...args) => await event.execute(client, ...args));
-        }),
-    ]);
+    await parallelMap(toBind, async (bind) =>
+        parallelMap(glob.sync(bind.path), async (file) => bind.handler((await import(file)).default))
+    );
 
     log(`${chalk.yellow("loaded")} all ${chalk.redBright("commands")} & ${chalk.redBright("events")}`);
-}
 
-client.login(config.token);
+    process.on("unhandledRejection", (error: Error) => {
+        warn(error);
+    });
+
+    await client.login(config.token);
+}

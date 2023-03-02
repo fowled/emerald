@@ -8,6 +8,8 @@ import { i18n } from "@/utils/i18n";
 
 import type { Place } from "@/types/DB";
 
+const { invalidCoordsMessage, invalidDimensionMessage, successfulPlaceAddMessage, modalAddTitle } = i18n("places");
+
 module.exports = {
     name: "addPlace",
 
@@ -24,14 +26,14 @@ module.exports = {
 
                 if (isNaN(parseInt(x)) || isNaN(parseInt(y)) || isNaN(parseInt(z))) {
                     return interaction.followUp({
-                        content: i18n("invalidCoordsMessage", "places"),
+                        content: invalidCoordsMessage,
                         ephemeral: true,
                     });
                 }
 
                 if (!["end", "nether", "overworld"].includes(dimension.toLowerCase())) {
                     return interaction.followUp({
-                        content: i18n("invalidDimensionMessage", "places"),
+                        content: invalidDimensionMessage,
                         ephemeral: true,
                     });
                 }
@@ -48,15 +50,13 @@ module.exports = {
                 await pb.collection("places").create(data);
 
                 await interaction.followUp({
-                    content: i18n("successfulPlaceAddMessage", "places"),
+                    content: successfulPlaceAddMessage,
                     ephemeral: true,
                 });
                 break;
 
             case "modal":
-                const addPlaceModal = modal(false)
-                    .setCustomId("place_add_submitted")
-                    .setTitle(i18n("modalAddTitle", "places"));
+                const addPlaceModal = modal(false).setCustomId("place_add_submitted").setTitle(modalAddTitle);
 
                 await (interaction as ButtonInteraction).showModal(addPlaceModal);
                 break;
