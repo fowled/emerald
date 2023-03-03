@@ -1,18 +1,18 @@
 {
     "setup": {
-        "description": "Exécute cette commande si tu viens de télécharger le code du bot !",
-        "status": "Le channel où sera posté le statut du serveur MC en temps réel",
-        "alreadyRan": "<:no:835565213322575963> Tu as déjà effectué le setup du bot !",
-        "interchat": "Le channel où seront postés les messages interchat MC <-> Discord",
-        "missingPerm": "On dirait que je n'ai pas la permission de créer des webhooks. Je ne peux pas continuer le setup.",
-        "info": "Ce message sera actualisé dans peu de temps avec des infos en temps réel sur le serveur Minecraft.",
-        "textChannel": "Un des deux channels n'est pas un channel textuel. Veuillez réessayer.",
-        "success": "<:yes:835565213498736650> La configuration du bot a été modifiée avec succès ! Redémarre-le dans la console pour que les changements soient effectifs.",
-        "error": "<:no:835565213322575963> Le fichier de configuration n'a pas pu être sauvegardé !"
+        "description": "Run this command if you've just installed Emerald",
+        "status": "The channel where the MC server status will be updated (in real time)",
+        "alreadyRan": "<:no:835565213322575963> You've already completed the bot setup!",
+        "interchat": "The channel where MC <-> Discord interchat messages will be sent",
+        "missingPerm": "<:no:835565213322575963> It looks like I don't have permission to create webhooks.",
+        "info": "This message will be updated shortly with real time info on the Minecraft server.",
+        "textChannel": "Either of the two channels is not a text channel. Please try again.",
+        "success": "<:yes:835565213498736650> The bot's configuration has been successfully modified! Restart it in the console for the changes to take effect.",
+        "error": "<:no:835565213322575963> The configuration file couldn't be saved!"
     },
 
     "status": {
-        "description": "Affiche des informations sur le serveur Minecraft"
+        "description": "Shows useful info about the Minecraft server"
     },
 
     "backup": {

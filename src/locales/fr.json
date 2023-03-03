@@ -4,7 +4,7 @@
         "status": "Le channel où sera posté le statut du serveur MC en temps réel",
         "alreadyRan": "<:no:835565213322575963> Tu as déjà effectué le setup du bot !",
         "interchat": "Le channel où seront postés les messages interchat MC <-> Discord",
-        "missingPerm": "On dirait que je n'ai pas la permission de créer des webhooks. Je ne peux pas continuer le setup.",
+        "missingPerm": "<:no:835565213322575963> On dirait que je n'ai pas la permission de créer des webhooks. Je ne peux pas continuer le setup.",
         "info": "Ce message sera actualisé dans peu de temps avec des infos en temps réel sur le serveur Minecraft.",
         "textChannel": "Un des deux channels n'est pas un channel textuel. Veuillez réessayer.",
         "success": "<:yes:835565213498736650> La configuration du bot a été modifiée avec succès ! Redémarre-le dans la console pour que les changements soient effectifs.",
