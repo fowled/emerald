@@ -1,0 +1,4 @@
+name: Emerald
+version: '${project.version}'
+main: fr.fowled.emerald.Emerald
+api-version: 1.19
