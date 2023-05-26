@@ -113,3 +113,4 @@ buildNumber.properties
 
 # Common working directory
 run/
+/src/main/kotlin/fr/fowled/emerald/constants/Constants.kt

@@ -1,45 +1,31 @@
 package fr.fowled.emerald
 
-import fr.fowled.emerald.bot.bot
-import fr.fowled.emerald.bot.kord
+import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
+import com.github.shynixn.mccoroutine.bukkit.registerSuspendingEvents
+import fr.fowled.emerald.bot.Bot
 import fr.fowled.emerald.events.EventsHandler
 
-import io.github.cdimascio.dotenv.dotenv
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import org.bukkit.plugin.java.JavaPlugin
-
-lateinit var scope: CoroutineScope
-
-val dotenv = dotenv()
-
 @Suppress("unused")
-class Emerald : JavaPlugin() {
-    override fun onEnable() {
+class Emerald : SuspendingJavaPlugin() {
+    private val bot = Bot()
+
+    override suspend fun onEnableAsync() {
         logger.info("Plugin started.")
 
-        scope = CoroutineScope(Dispatchers.Default)
+        server.pluginManager.registerSuspendingEvents(EventsHandler(bot), this)
 
-        scope.launch {
-            try {
-                bot()
-            } catch (e: Exception) {
-                println(e.stackTrace)
-            }
-        }
-
-        server.pluginManager.registerEvents(EventsHandler(), this)
+        bot.start()
     }
 
-    override fun onDisable() {
-        logger.info("Plugin shut down.")
+    override suspend fun onDisableAsync() {
+        /* bot.sendWebhook(
+            "🔴 Le serveur va s'éteindre, le bot également.",
+            "Server",
+            "https://mc-heads.net/avatar/steve2"
+        ) */
 
-        scope.launch {
-            kord.logout()
-        }
+        bot.stop()
 
-        scope.cancel()
+        logger.info("Plugin disabled.")
     }
 }

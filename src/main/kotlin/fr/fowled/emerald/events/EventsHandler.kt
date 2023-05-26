@@ -1,8 +1,7 @@
 package fr.fowled.emerald.events
 
+import fr.fowled.emerald.bot.Bot
 import fr.fowled.emerald.utils.parseComponent
-import fr.fowled.emerald.utils.sendWebhook
-
 import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -11,10 +10,12 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-class EventsHandler : Listener {
+class EventsHandler(bot: Bot) : Listener {
+    private val kord = bot
+
     @EventHandler
-    fun playerJoin(event: PlayerJoinEvent) {
-        return sendWebhook(
+    suspend fun playerJoin(event: PlayerJoinEvent) {
+        return kord.sendWebhook(
             ":wave: **${event.player.name}** a rejoint le serveur !",
             "Server",
             "https://mc-heads.net/avatar/steve2"
@@ -22,8 +23,8 @@ class EventsHandler : Listener {
     }
 
     @EventHandler
-    fun playerQuitEvent(event: PlayerQuitEvent) {
-        return sendWebhook(
+    suspend fun playerQuitEvent(event: PlayerQuitEvent) {
+        return kord.sendWebhook(
             ":cry: **${event.player.name}** a quitté le serveur...",
             "Server",
             "https://mc-heads.net/avatar/steve2"
@@ -31,10 +32,10 @@ class EventsHandler : Listener {
     }
 
     @EventHandler
-    fun asyncChatEvent(event: AsyncChatEvent) {
+    suspend fun asyncChatEvent(event: AsyncChatEvent) {
         val message = parseComponent(event.message())
 
-        return sendWebhook(
+        return kord.sendWebhook(
             message,
             event.player.name,
             "https://mc-heads.net/avatar/${event.player.name}"
@@ -42,7 +43,7 @@ class EventsHandler : Listener {
     }
 
     @EventHandler
-    fun playerDeathEvent(event: PlayerDeathEvent) {
+    suspend fun playerDeathEvent(event: PlayerDeathEvent) {
         val deathLog = event.deathMessage() ?: return
 
         var message = parseComponent(deathLog)
@@ -53,7 +54,7 @@ class EventsHandler : Listener {
 
         message = message.replace(event.player.name, "**${event.player.name}**")
 
-        return sendWebhook(
+        return kord.sendWebhook(
             "☠️ $message",
             "Server",
             "https://mc-heads.net/avatar/steve2"
@@ -61,7 +62,7 @@ class EventsHandler : Listener {
     }
 
     @EventHandler
-    fun playerAdvancementDoneEvent(event: PlayerAdvancementDoneEvent) {
+    suspend fun playerAdvancementDoneEvent(event: PlayerAdvancementDoneEvent) {
         val advancementLog = event.message() ?: return
 
         var message = parseComponent(advancementLog)
@@ -71,7 +72,7 @@ class EventsHandler : Listener {
             .replace(advancementName, "**$advancementName**")
             .replace(event.player.name, "**${event.player.name}**")
 
-        return sendWebhook(
+        return kord.sendWebhook(
             "🎖️ $message",
             "Server",
             "https://mc-heads.net/avatar/steve2"
